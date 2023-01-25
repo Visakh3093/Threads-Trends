@@ -1,0 +1,30 @@
+.formbox{
+    border: 1px rgb(255, 255, 255);
+    border-style: solid ;
+    padding: 30px;
+
+    width: 600px;
+    height:80vh;
+    margin-top: 70px;
+
+    background: rgba( 255, 135, 0, 0.75 );
+box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 0px );
+-webkit-backdrop-filter: blur( 0px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+}
+
+button{
+    width: 150px;
+    height: 50px;
+    margin-top: 20px;
+}
+.headding{
+   
+
+    font-size: 66px;
+    font-weight: revert;
+
+}

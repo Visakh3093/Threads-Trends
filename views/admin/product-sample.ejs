@@ -1,0 +1,112 @@
+<tbody>
+    <% if(products.length> 0){ %>
+      <% for(let i=1;i <=products.length; i++){ %>  
+        <% if(products[i-1].isAvailable ==1){ %>
+          
+          <tr>
+            <td><%= i %> </td>
+            <td>
+          
+            <%= products[i-1].name  %> 
+        </td>
+        <td>
+          <%= products[i-1].quantity %>
+        </td>
+        <td>
+            <%= products[i-1].price  %> 
+        </td>
+        <td>
+            <%= products[i-1].rating  %> 
+        </td>
+        <td>
+            <%= products[i-1].category%> 
+        </td>
+      <td>
+            <% if(products[i-1].image) { %>
+                <img src="/admin/assets/uploads/<%= products[i-1].image %>"
+                    width="100vw" height="100vh">
+                <% }else{ %>
+                    Image Not Found
+                    <% } %>
+        </td>
+        <td>
+                        <a class="text-success" href="/admin/editProduct?id=<%= products[i-1]._id %>"><i
+                                style="color: green;"
+                                class="m-r-5 mdi mdi-border-color"></i>Edit</a><br>
+                        <!-- <a data-toggle="modal" style="color: red"; data-target="
+                            #deleteModal" href=""><i
+                                class=" m-r-5 mdi mdi-delete-forever"></i>Delete</a> -->
+                        <a class="text-danger" href="/admin/deleteProduct?id=<%= products[i-1]._id %>"><i
+                                style="color: #ff0000;"
+                                class="m-r-5 mdi mdi-border-color"></i>Delete</a><br>
+          </td>
+          
+    </tr>
+    <% } %> 
+    <% } } else{ %>
+        <tr>
+            <td colspan="5">Products Not Found</td>
+        </tr>
+        <% } %>
+    
+  </tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <select name="sCategory" class="form-control">
+    <option value="" disabled selected>Select a Category</option>
+    <% if(category){ %>
+    <% for(let i=1;i <= category.length; i++){ %>
+      <option value="<%= category[i-1].name %>">
+        <%= category[i-1].name %>
+      </option>
+      <% } %>
+    <% }else{ %>
+      <h1>No Categories to add</h1>
+    <% } %>  
+  </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <% if(typeof message !== 'undefined'){%>
+    <p style="color:green"><%= message %></p>
+<% } %>
