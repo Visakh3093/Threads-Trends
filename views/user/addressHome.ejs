@@ -1,0 +1,135 @@
+<%- include('../partials/user-header') %>
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
+</style>
+
+<div class="container ">
+  <div class="row justify-content-center ">
+    <%if(Address.length>0){
+  for(let key of Address){%>
+ 
+    <div class="col-xl-8 ftco-animate">
+
+<div class="row mt-5 pt-3 ">
+  <div class="col-md-6 ">
+      <div class="cart-detail cart-total bg-light p-3 p-md-4">
+          <h3 class="billing-heading mb-4">Address</h3>
+          
+          <p class="">
+            <%= key.fullname %>
+            <br>
+            <%=key.houseNo%>,
+             <%= key.roadName %> <br>
+             <%=key.city %>
+              <%= key.state%>,
+              India - 
+              <%= key.pincode%><br><br>
+              <%= key.phone1%> &ensp; <%= key.phone2%> <br>                                                                                                   
+            
+            </p>
+                
+                </div>
+  </div>
+  
+ 
+</div>
+   
+</div> 
+<%}}%>
+</div>
+</div>
+
+
+
+<section class="ftco-section">
+  
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-8 ftco-animate">
+         
+                      <form action="/addAddress" method="post" class="billing-form">
+                          <h3 class="mb-4 billing-heading">Update Address</h3>
+                <div class="row align-items-end">
+                    <div class="col-md-6">
+                  <div class="form-group">
+                      <label for="firstname">Full Name</label>
+                    <input type="text" name="fullname" class="form-control" placeholder="">
+                  </div>
+                </div>
+                
+             
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label for="country">State</label>
+                          <div class="select-wrap">
+                        <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                        <select name="state" id="" class="form-control">
+                            <option value="Kerala">Kerala</option>
+                          <option value="Thamilnadu">Thamilnadu</option>
+                          <option value="Rajasthan">Rajasthan</option>
+                          <option value="Goa">Goa</option>
+                         
+                        </select>
+                      </div>
+                      </div>
+                  </div>
+                  
+                  <div class="w-100"></div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                      <label for="streetaddress">Town / City</label>
+                    <input type="text" name="city" class="form-control" placeholder="House number and street name">
+                  </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="streetaddress">House No / Building Name</label>
+                    <input type="text" name="houseNo" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
+                  </div>
+                  </div>
+                  <div class="w-100"></div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                      <label for="towncity">Road name,Area,Colony</label>
+                    <input type="text" name="roadName" class="form-control" placeholder="">
+                  </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label for="postcodezip">Pincode*</label>
+                    <input type="number" name="pincode" class="form-control" placeholder="">
+                  </div>
+                  </div>
+                  <div class="w-100"></div>
+                  <div class="col-md-6">
+                  <div class="form-group">
+                      <label for="phone">Phone</label>
+                    <input type="number" name="phone1" class="form-control" placeholder="">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                      <label for="emailaddress">Alternative Phone</label>
+                    <input type="number" name="phone2" class="form-control" placeholder="">
+                  </div>
+              </div>
+              <div class="w-100"></div>
+              <div class="form-group">
+                <input type="submit" style="margin-left: 275px;" value="Update Address" class="btn btn-primary py-3 px-5">
+              </div>
+              </div>
+            </form><!-- END -->
+
+
+
+           
+        </div> <!-- .col-md-8 -->
+      </div>
+    </div>
+  </section>
+
+<%- include('../partials/user-footer') %>
+

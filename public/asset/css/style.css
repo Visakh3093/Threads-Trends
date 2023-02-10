@@ -8957,8 +8957,8 @@ h1, h2, h3, h4, h5,
       -moz-appearance: none;
       appearance: none; }
 
-.cart-list {
-  overflow-x: scroll; }
+/* .cart-list {
+  overflow-x: scroll; } */
 
 .table {
   min-width: 1000px !important;
@@ -9071,6 +9071,7 @@ h1, h2, h3, h4, h5,
   color: rgba(0, 0, 0, 0.4) !important;
   font-size: 14px;
   border-radius: 0px;
+  
   -webkit-box-shadow: none !important;
   box-shadow: none !important; }
   .billing-form .form-control::-webkit-input-placeholder {

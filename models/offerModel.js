@@ -1,26 +1,24 @@
 const mongoose = require('mongoose')
 
-
 const offerSchema = new mongoose.Schema({
+name:{
+    type:String,
+    required:true
+},
+type:{
+    type:String,
+    required:true
+},
+discount:{
+type:Number,
+required:true
 
-    name:{
-        type:String,
-        required:true
-    },
-    type:{
-        type:String,
-        required:true
-    },
-    discount:{
-        type:Number,
-        required:true
-    },
-    // usedBy:[{
-    //     type:mongoose.Types.objectId,
-        
-    // }]
+},
+usedBy:[{
+    type:mongoose.Types.ObjectId,
+    ref:'users'
+}]
 
 })
 
-
-module.exports = mongoose.model('offer',offerSchema)
+module.exports = mongoose.model('Offer',offerSchema)

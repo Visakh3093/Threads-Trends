@@ -118,7 +118,8 @@
                
             </div>
             <div class="mb-3">
-                <button class="btn btn-primary d-grid w-100" type="submit"> Admin Login</button>
+              <span id="admin" class="text-danger"></span>
+                <button class="btn btn-primary d-grid w-100" onclick="validation()" type="submit"> Admin Login</button>
             </div>
         </form>
         
@@ -153,5 +154,48 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script type="text/javascript">
+
+      function validation() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;   
+  
+  
+  
+        if (email == "") {
+          document.getElementById('admin').innerHTML =
+            "please fill the email field";
+          return false;
+        }
+        if (email.indexOf('@') <= 0) {
+          document.getElementById('admin').innerHTML =
+            "Invalid '@' position ";              
+          return false;
+        }
+        if ((email.charAt(email.length - 4) != '.') &&
+          (email.charAt(email.length - 3) != '.')) {
+          document.getElementById('admin').innerHTML =
+            "Invalid '.' position ";
+          return false;
+        }   
+  
+  
+        if (password == "") {
+          document.getElementById('admin').innerHTML =
+            "please fill the password field";
+          return false;
+        }
+        if ((password.length < 3)) {
+          document.getElementById('admin').innerHTML =
+            "Password length must be between 5 and 10";
+          return false;
+        }
+  
+        
+  
+        
+      }
+     
+    </script>
   </body>
 </html>

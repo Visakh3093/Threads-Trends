@@ -28,34 +28,58 @@ router.use(express.json());
 router.use(express.urlencoded({extended:true}))
 
 
-router.get('/',userController.isLogin,userController.getUserHome)
+router.get('/',userController.isLogin,userController.getUserHome) 
 
 router.get('/login',userController.isLogin,userController.getLogin)
-
-router.post('/login',userController.verifyuser,userController.getUserHome)
  
 router.get('/register',userController.isLogin,userController.getRegister)
-
-router.post('/register',userController.addUser,userController.userLogin)
 
 router.get('/logout',userController.isLogout)
 
 router.get('/home',userController.isLogin,userController.getUserHome)
 
-router.get('/shop',userController.getShop)
-
-router.get('/cart',userController.getCart,userController.getLogin)    
+router.get('/shop',userController.getShop)    
 
 router.get('/contact',userController.getContact,userController.getLogin)
 
+router.get('/checkOut',userController.isUser,userController.checkOut)
 
+router.get('/singleProduct',userController.singleProduct)  
 
+router.get('/cart',userController.isUser,userController.loadCart)
 
+router.get('/addtocart',userController.isUser,userController.addToCart)
 
-router.get('/singleProduct',userController.singleProduct)
+router.get('/deleteCart',userController.isUser,userController.deleteCart)
+
+router.get('/editCart',userController.isUser,userController.editCart)
+
+router.get('/wishList',userController.isUser,userController.loadWishlist)
+
+router.get('/addressHome',userController.isUser,userController.addressHome)
+
+router.get('/dltAddress',userController.isUser,userController.deleteAddress)
+
+router.get('/loadOrders',userController.isUser,userController.loadOrder)
+
+router.get('/addToWishlist',userController.isUser,userController.addToWishlist)
+
+router.get('/deleteWishlist',userController.isUser,userController.deleteWishlist)
+
+router.get('/addCartDeleteWishlist',userController.isUser,userController.addCartDeleteWishlist)
+
  
- 
- 
+// post method  
+
+router.post('/register',userController.addUser,userController.loadOtp)
+
+router.post('/login',userController.verifyuser,userController.getUserHome)
+
+router.post('/addAddress',userController.isUser,userController.addAddress)
+
+router.post('/otp',userController.verifyOtp)
+
+router.post('/order',userController.isUser,userController.order)
 
 
 module.exports = router

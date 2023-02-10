@@ -10,7 +10,7 @@
       <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Products</span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="#">Home</a></span> <span>Products</span></p>
             <h1 class="mb-0 bread">Collection Products</h1>
           </div>
         </div>
@@ -28,7 +28,7 @@
 
 		    			<div class="col-sm-6 col-md-6 col-lg-4 ftco-animate">
 		    				<div class="product">
-		    					<a href="/singleProduct?id=<%= product[i-1]._id %>" class="img-prod"><img class="img-fluid" src=" admin/assets/uploads/<%= product[i-1].image%>" style="width: 350px; height: 350px;" alt="Colorlib Template">
+		    					<a href="/singleProduct?id=<%= product[i-1]._id %>" class="img-prod"><img class="img-fluid" src=" admin/assets/uploads/<%= product[i-1].image[0]%>" style="width: 350px; height: 350px;" alt="Colorlib Template">
 		    						<span class="status">New</span>
 		    						<div class="overlay"></div>
 		    					</a>
@@ -36,7 +36,7 @@
 		    						<h3><a href="#"><%= product[i-1].name%></a></h3>
 		    						<div class="d-flex">
 		    							<div class="pricing">
-				    						<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$<%= product[i-1].price%></span></p>
+				    						<p class="price"><span class="mr-2 price-dc">₹120.00</span><span class="price-sale">$<%= product[i-1].price%></span></p>
 				    					</div>
 				    					<div class="rating">
 			    							<p class="text-right">
@@ -49,8 +49,8 @@
 			    						</div>
 			    					</div>
 			    					<p class="bottom-area d-flex px-3">
-		    							<a href="/visakh?id=<%= product[i-1]._id %>" class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-		    							<a href="/cart" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></a>
+		    						<a href="/addtocart?id=<%= product[i-1]._id %> " class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a> 
+		    							<a href="/addToWishlist?id=<%= product[i-1]._id %>" class="buy-now text-center py-2">Add Wishlist<span><i class="ion-ios-cart ml-1"></i></span></a>
 		    						</p>
 		    					</div>
 		    				</div>

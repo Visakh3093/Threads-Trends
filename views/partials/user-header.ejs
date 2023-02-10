@@ -27,6 +27,10 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+
+	<link type="text/css" rel="stylesheet" href=" /magiczoom/magiczoom.css"/>
+	<script type="text/javascript" src=" /magiczoom/magiczoom.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body class="goto-here">
 		<div class="py-1 bg-black">
@@ -63,14 +67,16 @@
 	          
 	          <li class="nav-item"><a href="/shop" class="nav-link">Shop</a></li>
 	          <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
-	          <li class="nav-item"><a href="#" class="nav-link">wishlist</a></li>
-	          <li class="nav-item cta cta-colored"><a href="/cart" class="nav-link"><span class="icon-shopping_cart"></span></a></li>
+	          <!-- <li class="nav-item"><a href="#" class="nav-link">wishlist</a></li> -->
+			  <li class="nav-item cta cta-colored"><a href="/wishList" class="nav-link"><i class="fa fa-heart" style="font-size:13px;" aria-hidden="true"></i></a></li>
+	          <li class="nav-item cta cta-colored"><a href="/cart" class="nav-link"><span class="icon-shopping_cart" style="font-size:12px;"></span></a></li>
 			  <li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account </a>
+				<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Profile</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown04">
-					<!-- <a class="dropdown-item" href="shop.html">Account</a> -->
+					<a class="dropdown-item" href="/addressHome">My Address</a>
+				  <a class="dropdown-item" href="/loadOrders">My Orders</a>
+				  <a class="dropdown-item" href="#">My Coupon</a>
 				  <a class="dropdown-item" href="/logout">Logout</a>
-				  <!-- <a class="dropdown-item" href="cart.html">Signup</a> -->
 				  <!-- <a class="dropdown-item" href="checkout.html">Checkout</a> -->
 				</div>
 			  </li>

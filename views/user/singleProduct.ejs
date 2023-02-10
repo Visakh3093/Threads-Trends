@@ -20,17 +20,13 @@
       <div class="container">
           <div class="row">
               <div class="col-lg-6 mb-5 ftco-animate">
-                  <a href="#" class="image-popup"><img src=" admin/assets/uploads/<%= single.image%>" style="width:500px; height: 500px;" class="img-fluid" alt="Colorlib Template"></a>
-              </div>
-              <div class="col-lg-6 product-details pl-md-5 ftco-animate">
-                  <h3><%= single.name%></h3>
-                  <div class="rating d-flex">
-                          <p class="text-left mr-4">
-                              <a href="#" class="mr-2"> <%= single.rating%>.0</a>
-                              
-                              
-                              <a href="#"><span class="ion-ios-star-outline"></span></a>
-
+                  <a  href=" admin/assets/uploads/<%= single.image[0]%>" class="MagicZoom"><img src=" admin/assets/uploads/<%= single.image[0]%>" class="img-fluid" alt="Colorlib Template"></a>
+                </div>
+    			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
+    				<h3><%= single.name%></h3>
+    				<div class="rating d-flex">
+							<p class="text-left mr-4">
+								<a href="#" class="mr-2">5.0</a>
                               
                               <a href="#"><span class="ion-ios-star-outline"></span></a>
                               <a href="#"><span class="ion-ios-star-outline"></span></a>
@@ -44,7 +40,7 @@
                               <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
                           </p>
                       </div>
-                  <p class="price"><span>$<%= single.price%></span></p>
+                  <p class="price"><span>₹<%= single.price%></span></p>
                  
                   <p><%= single.description%>  </p>
                       <div class="row mt-4">
@@ -64,7 +60,7 @@
                           <div class="w-100"></div>
                           <div class="input-group col-md-6 d-flex mb-3">
                    <span class="input-group-btn mr-2">
-                      <button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
+                      <button type="button" class="quantity-left-minus btn"  data-type="minus"  data-field="">
                      <i class="ion-ios-remove"></i>
                       </button>
                       </span>
@@ -77,10 +73,10 @@
                 </div>
                 <div class="w-100"></div>
                 <div class="col-md-12">
-                    <p style="color: #000;">80 piece available</p>
+                    <p style="color: #000;"></p>
                 </div>
             </div>
-            <p><a href="cart.html" class="btn btn-black py-3 px-5">Add to Cart</a></p>
+            <p><a href="/addtocart?id=<%=single._id %> " class="btn btn-black py-3 px-5">Add to Cart</a></p>
               </div>
           </div>
       </div>
@@ -104,7 +100,7 @@
 
               <div class="col-sm col-md-6 col-lg ftco-animate">
                   <div class="product">
-                      <a href="#" class="img-prod"><img class="img-fluid" src="admin/assets/uploads/<%= product[i-1].image%>" style="width: 350px; height: 350px;" alt="Colorlib Template">
+                      <a href="/singleProduct?id=<%= product[i-1]._id %>" class="img-prod"><img class="img-fluid" src="admin/assets/uploads/<%= product[i-1].image[0]%>" style="width: 350px; height: 350px;" alt="Colorlib Template">
                           <span class="status">30%</span>
                           <div class="overlay"></div>
                       </a>
@@ -125,8 +121,8 @@
                               </div>
                           </div>
                           <p class="bottom-area d-flex px-3">
-                              <a href="#" class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-                              <a href="#" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></a>
+                              <a href="/AddCart?id=<%= product[i-1]._id %> " class="add-to-cart text-center py-2 mr-1"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+                              <a href="/AddCart?id=<%= product[i-1]._id %> " class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></a>
                           </p>
                       </div>
                   </div>
