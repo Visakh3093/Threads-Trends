@@ -15,7 +15,7 @@
 
         <div class="form-outline flex-fill mb-0">
           <label class="form-label" for="form3Example1c">Name</label>
-          <input type="text" id="fname" class="form-control" onkeyup="name()" name="sname" required />
+          <input type="text" id="name" class="form-control" onkeyup="validation()"  name="sname" required />
           <span id="name1" class="text-danger"></span>
         </div>
       </div>
@@ -33,7 +33,7 @@
 
         <div class="form-outline flex-fill mb-0">
           <label class="form-label" for="form3Example1c">Price</label>
-          <input type="number" id="price" class="form-control" name="sprice" required />
+          <input type="number" id="price" class="form-control"  onkeyup="validation()" name="sprice" required />
           <span id="price1" class="text-danger"></span>
         </div>
       </div>
@@ -42,7 +42,7 @@
 
         <div class="form-outline flex-fill mb-0">
           <label class="form-label" for="form3Example4c">Description</label>
-          <input type="text" id="description" class="form-control" name="sdescription" required />
+          <input type="text" id="description" class="form-control" onkeyup="validation()" name="sdescription" required />
           <span id="des" class="text-danger"></span>
         </div>
       </div>
@@ -51,7 +51,7 @@
 
         <div class="form-outline flex-fill mb-0">
           <label class="form-label" for="form3Example1c">Rating</label>
-          <input type="number" id="form3Example1c" class="form-control" name="srating" max="5" required />
+          <input type="number" id="rating" class="form-control" onkeyup="validation()" name="srating" max="5" required />
           <span id="rating1" class="text-danger"></span>
         </div>
       </div>
@@ -96,7 +96,7 @@
         </div>
       </div>
       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-        <button type="submit" onclick="validation()" value="submit" class="btn btn-primary btn-lg">Add Product</button>
+        <button type="submit" value="submit" onclick="return validation()" class="btn btn-primary btn-lg">Add Product</button>
         <!-- <a href="/admin/adminProduct" class="btn btn-primary ml-2 btn-lg">Go Back</a> -->
       </div>
 
@@ -127,18 +127,58 @@
 
 
   <!-- Core JS -->
- <script>
-  function name()
-  {
-  var name = document.getElementById('fname').value
-  
-if(name.length ==0)
-{
-  document.getElementById('name1').innerHTML="please fill the field"
-  return false
-}
-}
- </script>
+  <script type="text/javascript">
+
+    function validation() {
+      var name = document.getElementById('email').value;
+      var price = document.getElementById('password').value;   
+      var description = document.getElementById('description').value;
+      var rating = document.getElementById('rating').value;
+
+      if (name == "") {
+        document.getElementById('name1').innerHTML =
+          "please fill the field";
+        return false;
+      }
+      if((name.length <2) || (name.length > 15 )){
+           document.getElementById('name1').innerHTML =
+          "Product name length must be between 2 and 15";
+        return false;
+
+        }
+
+      if (price == "") {
+        document.getElementById('price1').innerHTML =
+          "please fill the price field";
+        return false;
+      }
+      
+
+
+      if (description == "") {
+        document.getElementById('des').innerHTML =
+          "please fill the field";
+        return false;
+      }
+      if ((description.length < 3) || (description.length > 20)) {
+        document.getElementById('des').innerHTML =
+          "Password length must be between 4 and 20";
+        return false;
+      }
+
+      if(rating == ""){
+        document.getElementById('rating1').innerHTML =
+          "please fill the field";
+        return false;
+
+      }
+
+      
+
+      
+    }
+   
+  </script>
 
 
   <%- include ('../partials/admin-footer') %>

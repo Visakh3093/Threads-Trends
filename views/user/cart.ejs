@@ -31,6 +31,7 @@
 						    </thead>
 						    <tbody>
 								<% if(cartProduct){ %>
+									<% if(id) {%>
 									<% for(let key of cartProduct.item){ %>   
 									  
 						      <tr class="text-center">
@@ -73,7 +74,9 @@
 						        
 						        <td class="total">₹<%=key.qty*key.productId.price%></td>
 						       </tr>
-							  <% }} else{ %>
+							  <% }}else { %>
+								<p>login</p>
+								<% }}else{ %>
 								  <tr>
 									
 									  <td colspan="5">Products Not Found</td>

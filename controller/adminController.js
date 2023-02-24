@@ -11,12 +11,13 @@ const adminLogin = (req, res) => {
 };
 
 const getAdmin = (req, res) => {
+
   res.render("admin-page");
 };
 
 const addProduct = async (req, res) => {
   try{
-    const categoryData = await categorySchema.find()
+    const categoryData = await categorySchema.find({isAvailable:true})
     res.render("add-product",{category:categoryData});
   }
   catch(err)
@@ -163,23 +164,48 @@ const getEdit = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-};
+};         
 
 const editProduct = async (req, res) => {
   try {
-    console.log(req.body.id);
-    await productModel.findByIdAndUpdate({ _id: req.body.id },
-      {
-        $set: {
-          name: req.body.name,
-          price: req.body.sprice,
-          description: req.body.sdescription,
-          rating: req.body.srating,
-          category: req.body.scategory,
-          image: req.body.sname,
-        },
+    const id = req.body.id
+  const name = req.body.name
+  const price = req.body.sprice
+  const description= req.body.sdescription
+  const rating= req.body.srating
+  const category= req.body.scategory
+  const images = req.files
+  const image= images.map((x) => x.filename)
+
+
+  if(image.length == 0)
+  {
+    await productModel.updateOne({_id:id},{
+      $set:{
+        name:name,
+        price:price,
+        description:description,
+        rating:rating,    
+        category:category,
+
       }
-    );
+    })
+  }
+  else
+  {
+    await productModel.updateOne({_id:id},{
+      $set:{
+        name:name,
+        price:price,
+        description:description,
+        rating:rating,
+        category:category,
+        image:image
+      }
+    })
+
+  }
+
 
     res.redirect("/admin/product");
   } catch (err) {
@@ -204,7 +230,7 @@ const unlistCategory = async (req,res)=>{
     res.redirect('/admin/adminCategory')
   }
   catch(err)
-  {
+  {                                                         
     console.log(err)
   }
 } 
@@ -239,6 +265,20 @@ const addCategory = async (req,res)=>{
 
   }  
   catch(err){
+    console.log(err)
+  }
+}
+
+const orderList = async(req,res)=>{
+  try{
+
+    
+
+
+
+  }
+  catch(err)
+  {
     console.log(err)
   }
 }

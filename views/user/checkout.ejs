@@ -104,12 +104,17 @@
         <div class="row">
           <%if(userAddress.length>0){
               for(let key of userAddress){%>
-              <a href="/checkout?addressid=<%=key._id%>">
+              
+
+                <a href="/checkout?addressid=<%=key._id%>">
                   <div class="col-md-6 form-group p_star">
-                      <a href="/checkout?addressid=<%=key._id%>">
+                      
+                    <a href="/checkout?addressid=<%=key._id%>">
+
                           <div class="card card-dashboard">
   
-                              <a href="/checkout?addressid=<%=key._id%>">
+                             
+                            <a href="/checkout?addressid=<%=key._id%>">
                                   <div class="card-body">
                                       <h3 class="card-title">Shipping
                                           Address</h3>
@@ -122,7 +127,7 @@
                                        <%=key.city %>
                                       <br>
                                       <%= key.phone1%> &ensp; <%= key.phone2%>   
-                                <a href="#"><i class=""></i></a> 
+                                <a href=""><i class=""></i></a> 
                                <a href="/dltAddress?addressid=<%=key._id%>"><i class="icon-close"></i>delete</a>
                               </p>
                                   </div>
@@ -321,7 +326,7 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="radio">
-                                       <label><input type="radio" name="Payment" class="mr-2"> UPI </label>
+                                       <label><input type="radio" name="Payment" value="upi" class="mr-2"> UPI </label>
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +340,7 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="radio">
-                                       <label><input type="radio" name="Payment" class="mr-2">Credit/Debit Card</label>
+                                       <label><input type="radio" name="Payment" value="Razorpay" class="mr-2">Razorpay</label>
                                     </div>
                                 </div>
                             </div>

@@ -44,11 +44,10 @@ router.get('/contact',userController.getContact,userController.getLogin)
 
 router.get('/checkOut',userController.isUser,userController.checkOut)
 
-router.get('/singleProduct',userController.singleProduct)  
+router.get('/singleProduct',userController.singleProduct)     
 
 router.get('/cart',userController.isUser,userController.loadCart)
 
-router.get('/addtocart',userController.isUser,userController.addToCart)
 
 router.get('/deleteCart',userController.isUser,userController.deleteCart)
 
@@ -68,10 +67,24 @@ router.get('/deleteWishlist',userController.isUser,userController.deleteWishlist
 
 router.get('/addCartDeleteWishlist',userController.isUser,userController.addCartDeleteWishlist)
 
- 
+router.get('/calcelOrder',userController.isUser,userController.cancelOrder) 
+
+router.get('/orderDetails',userController.isUser,userController.orderDetails)
+
+router.get('/orderSucces',userController.isUser,userController.orderSucces)
+
+router.get('/userProfile',userController.isUser,userController.userProfile)
+
+router.get('/editProfile',userController.isUser,userController.loadEditprofile)
+
+router.get('/editAddress',userController.isUser,userController.editAddress)
+
 // post method  
 
+
 router.post('/register',userController.addUser,userController.loadOtp)
+
+router.post('/addtocart',userController.isUser,userController.addToCart)
 
 router.post('/login',userController.verifyuser,userController.getUserHome)
 
@@ -81,5 +94,8 @@ router.post('/otp',userController.verifyOtp)
 
 router.post('/order',userController.isUser,userController.order)
 
+router.post('/razorpay',userController.isUser,userController.razorpayCheckout,userController.orderSucces)
+
+router.post('/editProfile',userController.isUser,userController.editProfile)
 
 module.exports = router

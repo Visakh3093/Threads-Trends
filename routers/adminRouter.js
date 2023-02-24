@@ -29,7 +29,7 @@ router.use(function (req, res, next) {
 });
 
 router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+router.use(express.urlencoded({ extended: true }));     
 
 // get method
 

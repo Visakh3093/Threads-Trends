@@ -5,6 +5,7 @@ const offerModel = require("../models/offerModel")
 const message = require("../config/sms")
 const bcrypt = require('bcrypt');
 const ordersModel = require("../models/ordersModel");
+const RazorPay = require('razorpay')
 
 
 
@@ -93,10 +94,10 @@ const order = async (req,res)=>{
     if(userSession.user_id){
       const userData = await userModel.findById({_id:userSession.user_id})
       const completeUser = await userData.populate("cart.item.productId")
-      
-      if(completeUser.cart.totalPrice > 0){
+      console.log(completeUser.cart)
+    
 
-        const Orders = await new ordersModel({
+        const Orders = await ordersModel({
           userId:userSession.user_id,
           payment:req.body.Payment,
           fullname:req.body.fullname,
@@ -106,18 +107,31 @@ const order = async (req,res)=>{
           city:req.body.city,
           houseNo:req.body.houseNo,
           roadName:req.body.roadName,
-          prodcuts:completeUser.cart,
+          products:completeUser.cart,
 
 
         })
-        await Orders.save().then(()=>console.log('order Saved'))
+      //  console.log('Orders'+Orders)
+         await Orders.save().then(()=>console.log('order Saved'))
 
-      }
-    }
-         
+        // userSession.currentOrder = orderData._id
+        // req.session.currentOrder = order._id
+
+      
+if(req.body.Payment == 'cod'){
+  res.redirect('/orderSucces')
+}
+else if(req.body.Payment === 'Razorpay')
+{
+  res.render('razorpay',{order:completeUser.cart.totalPrice,id:userSession.user_id})
+
+}
+
+
+    }  
 
     
-    res.render('orderSucces')
+   
 
 
   }catch(err){
@@ -132,10 +146,47 @@ const loadOrder = async(req,res)=>{
 
     const userSession = req.session;
 
-    const orderData = await ordersModel.find({userId:userSession.user_id})
-    console.log(orderData)    
+    const orderData = await ordersModel.find({userId:userSession.user_id}).sort({createdAt:-1})
+  
 
     res.render('userOrder',{Order:orderData,id:userSession.user_id})
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+// const orderDetails = async (req,res)=>{
+//   try{
+
+//     const userSession = req.session;
+//     const id = req.query.id  
+//     userSession.currentOrder = id 
+//     const userData = await userModel.findById({_id:userSession.user_id})
+//     const orderData = await ordersModel.find({userId:userSession.user_id})
+    
+  
+// console.log(orderData)
+//     res.render('orderDetials',{user:userData,order:orderData})
+    
+
+//   }catch(err)
+//   {
+//     console.log(err)
+
+//   }
+// }
+
+const orderDetails = async (req,res)=>{
+  try{
+
+    const order = await ordersModel.findById({_id:req.query.id})
+    const completeOrder = await order.populate('products.item.productId')
+console.log(completeOrder)
+    
+    res.render('orderDetials',{orders:completeOrder.products.item,id:req.session.user_id})
 
   }
   catch(err)
@@ -160,19 +211,11 @@ const completeUser = await userData.populate("cart.item.productId")
 if(userSession.user_id && completeUser.cart.totalPrice){
   const addressData = await addressModel.find({userId:userSession.user_id})
   const selectAddress = await addressModel.findOne({_id:id})
-  const offer = await offerModel.findOne({_id:userSession.user_id})
-
-  // if(userSession.couponTotal == 0){
-  //   console.log('8')
-  //   userSession.couponTotal = userData.cart.totalPrice
-  //   console.log('9')
-  // }
+  
 
     res.render("checkout",{
       
       cartProducts:completeUser.cart,
-      // offer:userSession.couponTotal,
-      // nocoupon,qty:completeUser.cart.item.qty,
       addSelect:selectAddress,
       userAddress:addressData,
       
@@ -196,6 +239,7 @@ const deleteAddress = async(req,res)=>{
 
     await addressModel.findByIdAndDelete({_id:id})
     res.redirect('/checkOut')
+    
 
   }
   catch(err){
@@ -204,92 +248,110 @@ const deleteAddress = async(req,res)=>{
 }
 
 
-let Newusers;
+let newUsers
 
-const addUser = async (req, res, next) => {
-  try {
+const addUser = async (req,res,next)=>{
+   
 
-    const userData = await userModel.findOne({email:req.body.email})
-    const userData1 = await userModel.findOne({mobile:req.body.mobile})
-
-    if(userData || userData1){
-      res.render('register',{message:'this account is already exist'})
-    }
-    else
-    {
-     Newusers = {
-      name: req.body.name,
-      email: req.body.email,
-      mobile: req.body.mobile,
-      password: req.body.password,
-      isAdmin: false,
-      isVerified: true,
-    }
-    next();
-  }
-  } catch (err) {
-    console.log(err);
-  }
-};
-let newOtp;
-const loadOtp = async (req,res,next)=>{
   try{
 
-    const userData = Newusers
-    const mobile = userData.mobile
+    const userEmail = await userModel.findOne({email:req.body.email})
+    const userMobile = await userModel.findOne({mobile:req.body.mobile})
 
-    newOtp = message.sendMessage(mobile,res)
+    if(userEmail || userMobile){
+
+      res.render('register',{message:"This account is already exist"})
+    }
+    else 
+    {
+       newUsers = {
+        name:req.body.name,
+        email:req.body.email,
+        mobile:req.body.mobile,
+        password:req.body.password
+      }
+
+      next()
+
+    }
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+
+}
+let newOtp;
+
+const loadOtp = async(req,res)=>{
+  try{
+    const userData = newUsers
+    const mobile = userData.mobile
+console.log(userData)
+     newOtp = message.sendMessage(mobile,res)
     console.log(newOtp)
 
-    res.render('otp',{userData,newOtp,message:""})
-
+    res.render('otp',{user:userData,message:""})
 
   }catch(err){
     console.log(err)
   }
 }
 
-const verifyOtp = async (req,res,next)=>
-{
-  try{
-    const userData = Newusers
-    const otp = newOtp
-    console.log(otp)
-    console.log(req.body.otp)
 
-    if(otp == req.body.otp)
-    {
-      // const Password = await bcrypt.hash(req.body.password,10)
-      const user = await new userModel({
-        name:req.body.name,
-        email:req.body.email,
-        mobile:req.body.mobile,
-        password:req.body.password,
-        isAdmin:false,
-        isVerified: true
-      })
-      await user.save().then(()=>{ 
-        console.log('registed succesfully')
-      })
-      if(user){
-        res.render('login')
-      }
-      else{
-        res.render('otp',{message:'invalid otp',userData,newOtp})
-      }
+const verifyOtp = async (req,res)=>{
+try{
 
-    }
-    else
-    {
-      res.render('otp',{message:'visakh',userData,newOtp})
+  const userData = newUsers
+  const otp = newOtp
 
-    }
+  console.log(otp)
 
+
+  if(otp == req.body.otp)
+  {
+    const users = await new userModel({
+      name:userData.name,
+      email:userData.email,
+      mobile:userData.mobile,
+      password:userData.password,
+      isAdmin:false,
+      isVerified: true
+    })
+
+    await users.save().then(()=>console.log('user Saved'))
+    res.render('login')
   }
-  catch(err){
+  else
+  {
+    res.render('otp',{message:'invalid otp'})
+  }
+
+  
+
+}
+catch(err)
+{
+  console.log(err);
+}
+}
+
+
+const cancelOrder = async(req,res)=>{
+  try{
+    const id = req.query.id
+    await ordersModel.findByIdAndUpdate({_id:id},{
+      $set:{status:false}
+    })
+    res.redirect('/loadOrders')
+  }catch(err)
+  {
     console.log(err)
   }
+
 }
+
 
 const verifyuser = async (req, res, next) => {
   try {
@@ -414,25 +476,31 @@ const isUser = (req,res,next)=>{
 
 const loadCart = async (req,res)=>{
     try{
+      const userSession = req.session
 
-        const userData = await userModel.findById({_id:req.session.user_id})
+        const userData = await userModel.findById({_id:userSession.user_id})
+
+        // console.log(req.session.user_id)
         const compleatUser = await userData.populate('cart.item.productId')
-        res.render('cart',{id:req.session.user_id,cartProduct:compleatUser.cart})
+    
+        res.render('cart',{id:userSession.user_id,cartProduct:compleatUser.cart})
     }
     catch(err)
     {
         console.log(err)
     }
 }
+
+
 const addToCart = async (req,res)=>{
 
     try{
-        const productId = req.query.id;
+        const productId = req.body.id;
         userSession = req.session
         const userData = await userModel.findById({_id: userSession.user_id})
         const productData = await productModel.findById({_id:productId})
         userData.addToCart(productData)
-        res.redirect('/cart')
+        res.redirect('/shop')
 
     }
     catch(err){
@@ -551,6 +619,112 @@ const deleteWishlist = async (req, res) => {
   }
 };
 
+const razorpayCheckout = async (req, res,next) => {
+  try{
+    
+  userSession = req.session;
+  const userData = await userModel.findById({ _id: userSession.user_id });
+  const completeUser = await userData.populate("cart.item.productId");
+  var instance = new RazorPay({
+    key_id: process.env.key_id,
+    key_secret: process.env.key_secret,
+  });
+  console.log(req.body);
+  console.log(completeUser.cart.totalPrice);
+  let order = await instance.orders.create({
+    amount: completeUser.cart.totalPrice * 100,
+    currency: "INR",
+    receipt: "receipt#1",
+  });
+  res.status(201).json({
+    success: true,
+    order,
+  })
+  next()
+}
+catch(err){
+  console.log(err)
+}
+};
+
+
+const orderSucces = (req,res)=>{
+  try{
+    res.render('orderSucces')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const userProfile = async (req,res)=>{
+  try{
+    
+    const userSession = req.session
+
+    const userData = await userModel.findById({_id:userSession.user_id})
+
+    res.render('userProfile',{id:userSession.user_id,user:userData})
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+const loadEditprofile= async (req,res)=>{
+  try{
+    const userData = await userModel.findById({_id:req.session.user_id}) 
+    res.render('editProfile',{user:userData})
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const editProfile = async (req,res)=>{
+  try{
+    console.log('1');
+
+  await userModel.findByIdAndUpdate({_id:req.session.user_id},{
+      $set:{
+        name:req.body.name,
+        email:req.body.email,
+        mobile:req.body.mobile
+
+      }
+    })
+    res.redirect('/userProfile')
+    console.log('succes')
+
+
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+
+const editAddress = async (req,res)=>{
+  try{
+
+    const id = req.query.id
+    const address = await addressModel.findById({_id:id})
+    res.render('editAddress',{address:address})
+
+
+
+  }
+  catch(err){
+    console.log(err)
+  }
+}
 
 
 
@@ -586,5 +760,14 @@ module.exports = {
   loadOrder,
   addToWishlist,
   deleteWishlist,
-  addCartDeleteWishlist
+  addCartDeleteWishlist,
+  cancelOrder,
+  orderDetails,
+  razorpayCheckout,
+  orderSucces,
+  userProfile,
+  loadEditprofile,
+  editProfile,
+  editAddress
+
 };

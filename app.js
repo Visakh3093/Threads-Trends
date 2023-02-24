@@ -6,8 +6,10 @@ const userRouter = require("./routers/userRouter");
 
 const app = express();
 
+require('dotenv').config
+
 //port setting
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 7000;
 
 // view engine setup
 app.set("view engine", "ejs");
@@ -28,9 +30,11 @@ userRouter.use(express.static("./public/asset"));
 adminRouter.use(express.static("./public/admin"));
 
 // mongo db connection
+
+const DB = process.env.mongodb
 mongoose.set("strictQuery", true);
 const conn = async () => {
-  await mongoose.connect("mongodb://127.0.0.1:27017/project", () => {
+  await mongoose.connect(DB, () => {
     console.log("database connected");
   });
 };

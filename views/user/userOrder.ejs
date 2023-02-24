@@ -59,9 +59,9 @@
                     <td><%= key.name %></td>
                     <td><%= key.createdAt.toDateString() %></td>
                     <td><%= key.payment %></td>
-                    <td><%= key.status %></td>
-                  <td><a href="/cancelOrder?id=<%= key._id %>" class="btn btn-danger ">Cancel Order</a></td>
-                  <td><a href="/viewOrder?id=<%= key._id %>" class="btn btn-info">View Details</a></td>
+                    <td><% if(key.status == true) {%><i class="m-r-10 mdi mdi-account-off text-success" style="width: 100px;">Ordered</i><%} else{%>  <i class="m-r-10 mdi mdi-account-off text-danger" style="width: 100px;">Order Cancel</i><% } %> </td>
+                  <td><% if(key.status == true) {%> <a href="/calcelOrder?id=<%= key._id %>" class="btn btn-danger ">Cancel Order</a><% }else{}%></td>
+                  <td><% if(key.status == true) {%><a href="/orderDetails?id=<%= key._id %>" class="btn btn-info">View Details</a><% }else{}%></td>
                 </tr>
               </tbody>
               <% }else{ %> 

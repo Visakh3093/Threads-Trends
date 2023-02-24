@@ -1,0 +1,36 @@
+<%- include('../partials/user-header') %>
+
+<br>
+
+
+<div class="container ">
+    <div class="row justify-content-center ">
+     
+   
+      <div class="col-xl-8 ftco-animate">
+  
+  <div class="row mt-5 pt-3 ">
+    <div class="col-md-6 ">
+        <div class="cart-detail cart-total bg-light p-3 p-md-4">
+            <h3 class="billing-heading mb-4"> <%= user.name %> </h3>
+            
+              <%=user.mobile%><br>
+               <%= user.email %> <br>
+               <a href="/editProfile"><p style="padding-left: 90%; color: peru;">edit</p> </a>
+               
+                  
+                  </div>
+    </div>
+    
+   
+  </div>
+     
+  </div> 
+  
+  </div>
+  </div>
+  <br><br><br><br>
+
+
+
+<%- include('../partials/user-footer') %>

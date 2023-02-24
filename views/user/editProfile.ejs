@@ -1,0 +1,28 @@
+<%- include('../partials/user-header') %>
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
+</style>
+<br>
+
+
+<div class="edit" style="padding-left: 500px; padding-top: 10px;" >
+<form action="/editProfile" method="POST">
+    <label for="fname">New name:</label><br>
+    <input type="text" id="fname" name="name" value="<%=user.name%>"><br><br>
+    <label for="lname">New email:</label><br>
+    <input type="text" id="lname" name="email" value="<%=user.email%>"><br><br>
+    <label for="lname">New mobile:</label><br>
+    <input type="text" id="lname" name="mobile" value="<%=user.mobile%>"><br><br>
+    <button class="btn btn-black" type="submit" value="Submit">Submit</button>
+  </form>
+</div>
+
+
+  <br><br><br>
+
+
+
+<%- include('../partials/user-footer') %>
