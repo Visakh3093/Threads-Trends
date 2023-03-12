@@ -1,0 +1,118 @@
+<%- include ('../partials/admin-header') %>
+
+
+
+
+
+<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Add<span class="text-main-1">Banner</span></p>
+
+<form class="col-md-4 justify-content-center" style="margin-left: 355px;" action="/admin/addBanner" method="post" enctype="multipart/form-data">
+
+  <div class="d-flex flex-row align-items-center mb-2">
+
+    <!-- <div class="form-outline flex-fill mb-0">
+      <label class="form-label" for="form3Example1c">Name</label>
+      <input type="text" id="name" class="form-control" onkeyup="validation()"  name="sname" required />
+      <span id="name1" class="text-danger"></span>
+    </div> -->
+  </div> 
+
+   <div class="d-flex flex-row align-items-center mb-2">
+
+    <!-- <div class="form-outline flex-fill mb-0">
+      <label class="form-label" for="form3Example3c">Category</label>
+      <input type="text" id="form3Example3c" class="form-control" name="scategory" required />
+
+    </div> -->
+  </div>
+
+  <div class="d-flex flex-row align-items-center mb-2">
+
+    <!-- <div class="form-outline flex-fill mb-0">
+      <label class="form-label" for="form3Example1c">Price</label>
+      <input type="number" id="price" class="form-control"  onkeyup="validation()" name="sprice" required />
+      <span id="price1" class="text-danger"></span>
+    </div> -->
+  </div>
+
+  <div class="d-flex flex-row align-items-center mb-2">
+
+    <div class="form-outline flex-fill mb-0">
+      <label class="form-label" for="form3Example4c">Description</label>
+      <input type="text" id="description" class="form-control"  name="description" required />
+      <span id="des" class="text-danger"></span>
+    </div>
+  </div>
+
+  <div class="d-flex flex-row align-items-center mb-2">
+
+    <!-- <div class="form-outline flex-fill mb-0">
+      <label class="form-label" for="form3Example1c">Rating</label>
+      <input type="number" id="rating" class="form-control" onkeyup="validation()" name="srating" max="5" required />
+      <span id="rating1" class="text-danger"></span>
+    </div> -->
+  </div>
+
+  <!-- <script>
+
+  </script> -->
+  <div class="d-flex flex-row align-items-center mb-2">
+                                   
+    <div class="form-outline flex-fill mb-0">
+      <label class="form-label  select-label" for="form3Example1c"></label>
+      <!-- <select name="genre" class="form-control">
+        <option value="" disabled selected>Category</option>
+        <option value="T-Shirt">T-shirt</option>
+        <option value="Shirt">Shirt</option>
+        <option value="Shoes">Shoes</option>
+        <option value="Bags">Bags</option>
+        <option value="watches">Watches</option>
+      </select> -->
+
+      <!-- <select name="scategory" class="form-control">
+        <option value=""  disabled selected>Select a Category</option>
+       
+      </select> -->
+
+    </div>
+  </div>
+  
+  <div class="d-flex flex-row align-items-center mb-4">
+    <div class="form-outline flex-fill mb-0">
+      <label class="form-label" for="image">Image</label>
+      <input type="file" id="image" class="form-control" name="image"  multiple accept="image/png, image/gif, image/jpeg, image/jpg ,image/webp" />
+      <span id="image1" class="text-danger"></span>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+    <button type="submit" value="submit" onclick="return validation()" class="btn btn-primary btn-lg">Add Product</button>
+    <!-- <a href="/admin/adminProduct" class="btn btn-primary ml-2 btn-lg">Go Back</a> -->
+  </div>
+
+  <!-- something  -->
+
+.
+</form>
+
+
+
+
+
+
+<!-- / Footer -->
+
+<div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
+</div>
+<!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+
+<%- include ('../partials/admin-footer') %>

@@ -45,13 +45,14 @@
                                                  console.log(typeof(orderData.order.amount));
  
                                                  var options = {
-                                                     "key": 'rzp_test_DRjeBcdJDCrHVL', // Enter the Key ID generated from the Dashboard
+                                                     "key": 'rzp_test_JnfdUmWbPHfVnc', // Enter the Key ID generated from the Dashboard
                                                      "amount": orderData.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                                                      "currency": "INR",
  
                                                      "order_id": orderData.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                                                      "handler": function (response) {
                                                          console.log(response);
+                                                         window.location.href = "/orderSucces";
                                                         
                                                 
                                                         //  alert(response.razorpay_payment_id);
@@ -67,8 +68,52 @@
                                              }
  
                                          </script>
+                                         <!-- <script>
+                                            var rzp = new Razorpay({
+                                              "key": 'rzp_test_JnfdUmWbPHfVnc',
+                                              "amount":orderData.order.amount,
+                                              currency: "INR",
+                                              name: "Threads",
+                                              description: "",
+                                              image: "https://example.com/your_logo.jpg",
+                                            
+                                              handler: function(response) {
+                                                // Handle payment success
+                                                console.log(response);
+                                                //alert("Payment Successful!");
+                                                window.location.href = "/orderSuccess";
+                                              },
+                                              prefill: {
+                                                name: "",
+                                                email: ""
+                                              },
+                                              notes: {
+                                                address: ""
+                                              }
+                                            });
+                                      
+                                            rzp.on('payment.failed', function (response){
+                                              // Handle payment failure
+                                              console.log(response.error.code);
+                                              console.log(response.error.description);
+                                              console.log(response.error.source);
+                                              console.log(response.error.step);
+                                              console.log(response.error.reason);
+                                              console.log(response.error.metadata);
+                                              //alert("Payment Failed! Please try again.");
+                                              window.location.href = "/paymentFailure";
+                                            });
+                                      
+                                            document.getElementById("rzp-button1").onclick = function(e){
+                                              rzp.open();
+                                              e.preventDefault();
+                                            };
+                                          </script> -->
+
+
+
  
-                                         <a href="/checkOut" class="btn btn-danger ml-2 btn-lg">Go Back</a>
+                                         <a href="/" class="btn btn-danger">Go Back</a>
                                      </div>
                                  </div>
  

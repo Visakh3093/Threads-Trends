@@ -6,6 +6,7 @@ const message = require("../config/sms")
 const bcrypt = require('bcrypt');
 const ordersModel = require("../models/ordersModel");
 const RazorPay = require('razorpay')
+const bannerModel = require('../models/bannerModel')
 
 
 
@@ -39,7 +40,7 @@ const userLogin = (req, res) => {
 const addAddress = async (req,res)=>{
   try{
       userSession = req.session
-    const Address = await new addressModel({
+    const Address =  new addressModel({
       userId:userSession.user_id,
       fullname:req.body.fullname,    
       state:req.body.state,
@@ -56,7 +57,7 @@ const addAddress = async (req,res)=>{
     await Address.save().then(()=>{
       console.log('address added')
     })
-    res.redirect('/addressHome')
+    res.redirect('/checkout')
 
   }
   catch(err)
@@ -92,6 +93,10 @@ const order = async (req,res)=>{
   try{
     const userSession = req.session
     if(userSession.user_id){
+      if(req.body.address){
+      const addressid = req.body.address
+      const addressData = await addressModel.findById({_id:addressid})
+
       const userData = await userModel.findById({_id:userSession.user_id})
       const completeUser = await userData.populate("cart.item.productId")
       console.log(completeUser.cart)
@@ -100,13 +105,13 @@ const order = async (req,res)=>{
         const Orders = await ordersModel({
           userId:userSession.user_id,
           payment:req.body.Payment,
-          fullname:req.body.fullname,
-          phone1:req.body.phone1,
-          pincode:req.body.pincode,
-          state:req.body.state,
-          city:req.body.city,
-          houseNo:req.body.houseNo,
-          roadName:req.body.roadName,
+          fullname:addressData.fullname,
+          phone1:addressData.phone1,
+          pincode:addressData.pincode,
+          state:addressData.state,
+          city:addressData.city,
+          houseNo:addressData.houseNo,
+          roadName:addressData.roadName,
           products:completeUser.cart,
 
 
@@ -129,6 +134,12 @@ else if(req.body.Payment === 'Razorpay')
 
 
     }  
+    else
+    {
+      res.render('checkout')
+    }
+  }
+
 
     
    
@@ -158,35 +169,17 @@ const loadOrder = async(req,res)=>{
   }
 }
 
-// const orderDetails = async (req,res)=>{
-//   try{
-
-//     const userSession = req.session;
-//     const id = req.query.id  
-//     userSession.currentOrder = id 
-//     const userData = await userModel.findById({_id:userSession.user_id})
-//     const orderData = await ordersModel.find({userId:userSession.user_id})
-    
-  
-// console.log(orderData)
-//     res.render('orderDetials',{user:userData,order:orderData})
-    
-
-//   }catch(err)
-//   {
-//     console.log(err)
-
-//   }
-// }
-
 const orderDetails = async (req,res)=>{
   try{
-
+const userData = await userModel.findById({_id:req.session.user_id})
     const order = await ordersModel.findById({_id:req.query.id})
+    console.log(order._id)
+  
     const completeOrder = await order.populate('products.item.productId')
-console.log(completeOrder)
     
-    res.render('orderDetials',{orders:completeOrder.products.item,id:req.session.user_id})
+
+    
+    res.render('orderDetials',{order:completeOrder,id:req.session.user_id,orders:order,orderId:order._id,user:userData})
 
   }
   catch(err)
@@ -201,7 +194,7 @@ console.log(completeOrder)
 const checkOut = async (req, res) => {
   try {
     const userSession = req.session
-    console.log(userSession.user_id)
+    // console.log(userSession.user_id)
 
 const id = req.query.addressid
 
@@ -210,13 +203,12 @@ const completeUser = await userData.populate("cart.item.productId")
 
 if(userSession.user_id && completeUser.cart.totalPrice){
   const addressData = await addressModel.find({userId:userSession.user_id})
-  const selectAddress = await addressModel.findOne({_id:id})
+  
   
 
     res.render("checkout",{
       
       cartProducts:completeUser.cart,
-      addSelect:selectAddress,
       userAddress:addressData,
       
     });
@@ -235,6 +227,7 @@ const deleteAddress = async(req,res)=>{
 
 
     const id = req.query.addressid
+    console.log(id)
   
 
     await addressModel.findByIdAndDelete({_id:id})
@@ -342,7 +335,7 @@ const cancelOrder = async(req,res)=>{
   try{
     const id = req.query.id
     await ordersModel.findByIdAndUpdate({_id:id},{
-      $set:{status:false}
+      $set:{status:'Canceled'}
     })
     res.redirect('/loadOrders')
   }catch(err)
@@ -360,11 +353,12 @@ const verifyuser = async (req, res, next) => {
 
     const userData = await userModel.findOne({ email: userEmail });
     if (userData) {
-      if (userData.isVerified === true) {
+      console.log(userData)
+      if (userData.isVerified) {
         if (userData.password === userPassword) {
           req.session.user_id = userData._id;
           req.session.user = userData.email;
-          next();
+          res.redirect('/home')
         } else {
           // console.log("password error");
          res.render("login", { message: "wrong password" });
@@ -382,9 +376,12 @@ const verifyuser = async (req, res, next) => {
   }
 };
 
-getUserHome = (req, res) => {
+const getUserHome = async (req, res) => {
   try {
-    res.render("userHome", { id: req.session.user_id });
+
+    const banner = await bannerModel.find({isAvailable:true})
+    console.log('banner',banner)
+    res.render("userHome", { id: req.session.user_id,banner:banner });
   } catch (err) {
     console.log(err);
   }
@@ -458,6 +455,7 @@ const getContact = (req, res, next) => {
     console.log(err.message);
   }
 };
+
 const isUser = (req,res,next)=>{
     try{
         if(!req.session.user_id){
@@ -550,15 +548,6 @@ const deleteCart = async (req,res)=>{
     }
 }  
 
-// const loadWishlist = (req,res)=>{
-//   try{
-//     res.render('wishList')
-//   }
-//   catch(err){
-//     console.log(err)
-//   }
-// }
-
 
 const loadWishlist = async (req, res) => {
   try {
@@ -648,8 +637,19 @@ catch(err){
 };
 
 
-const orderSucces = (req,res)=>{
+const orderSucces = async (req,res)=>{
   try{
+    await userModel
+            .findByIdAndUpdate(
+              { _id: req.session.user_id },
+              {
+                $set: {
+                  "cart.item": [],
+                  "cart.totalPrice": "0",
+                },
+              },
+              { multi: true }
+            )
     res.render('orderSucces')
 
   }
@@ -688,7 +688,7 @@ const loadEditprofile= async (req,res)=>{
 
 const editProfile = async (req,res)=>{
   try{
-    console.log('1');
+    
 
   await userModel.findByIdAndUpdate({_id:req.session.user_id},{
       $set:{
@@ -711,10 +711,11 @@ const editProfile = async (req,res)=>{
 }
 
 
-const editAddress = async (req,res)=>{
+const loadeditAddress = async (req,res)=>{
   try{
 
-    const id = req.query.id
+    const id = req.query.addressid
+    console.log(id)
     const address = await addressModel.findById({_id:id})
     res.render('editAddress',{address:address})
 
@@ -726,8 +727,175 @@ const editAddress = async (req,res)=>{
   }
 }
 
+const editAddress = async (req,res)=>{
+  try{
+    const id = req.body.id
+    console.log(id)
+    const userSession = req.session
+     await addressModel.findByIdAndUpdate({_id:id},
+      {$set:{
+        userId:userSession.user_id,
+      fullname:req.body.fullname,    
+      state:req.body.state,
+      city:req.body.city,      
+      houseNo:req.body.houseNo,
+      roadName:req.body.roadName,
+      pincode:req.body.pincode,
+      phone1:req.body.phone1,
+      phone2:req.body.phone2
+
+      }})
+      console.log('1')
+      res.redirect('/checkout')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
 
 
+
+const loadProfileAddress = async (req,res)=>{
+  try{
+
+    const userSession = req.session
+    console.log(userSession.user_id)
+
+    const addressData = await addressModel.find({userId:userSession.user_id})
+    console.log(addressData)
+
+    res.render('editAddressProfile',{userAddress:addressData})
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+
+
+const updateCartItem = async (req, res) => {
+  try {
+    const { productId, qty } = req.body;
+    const userId = req.session.user_id;
+
+    const user = await userModel
+      .findById(userId)
+      .populate("cart.item.productId");
+
+    const cartItem = user.cart.item.find(
+      (item) => item.productId._id.toString() === productId.toString()
+    );
+
+    const productPrice = cartItem.productId.price;
+
+    const qtyChange = qty - cartItem.qty;
+
+    cartItem.qty = qty;
+    cartItem.price = productPrice * qty;
+
+    // recalculate the total price of the cart
+    const totalPrice = user.cart.item.reduce(
+      (acc, item) => acc + item.price,
+      0
+    );
+    user.cart.totalPrice = totalPrice;
+
+    // mark the cart and totalPrice fields as modified
+    user.markModified("cart");
+    user.markModified("cart.totalPrice");
+
+    // save the updated user document
+    await user.save().then((data) => {
+      console.log(data);
+    });
+
+    // send the updated subtotal and grand total back to the client
+    const subtotal = user.cart.item.reduce((acc, item) => acc + item.price, 0);
+    const grandTotal = subtotal + 45;
+
+    res.json({ subtotal, grandTotal, productPrice, qtyChange });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating cart item");
+  }
+};
+
+const returnReqst = async (req,res)=>{
+  try{
+    
+    const id = req.query.id
+    await ordersModel.findByIdAndUpdate({_id:id},{$set:{status:'Rqstd'}})
+    res.redirect("/loadOrders")
+
+  }
+  catch(err)
+  {
+  console.log(err)
+}
+}
+ const usrDltAddress = async(req,res)=>{
+  try{
+    
+    const id = req.query.id
+    await addressModel.findByIdAndDelete({_id:id})
+    res.redirect('/editAdressProfile')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+ }
+
+
+ const usrEditAddress = async (req,res)=>{
+  try{
+    const id = req.body.id
+    console.log(id)
+    const userSession = req.session
+     await addressModel.findByIdAndUpdate({_id:id},
+      {$set:{
+        userId:userSession.user_id,
+      fullname:req.body.fullname,    
+      state:req.body.state,
+      city:req.body.city,      
+      houseNo:req.body.houseNo,
+      roadName:req.body.roadName,
+      pincode:req.body.pincode,
+      phone1:req.body.phone1,
+      phone2:req.body.phone2
+
+      }})
+    
+      res.redirect('/editAdressProfile')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+
+const loadusrEditAddress = async (req,res)=>{
+  try{
+
+    const id = req.query.addressid
+    console.log(id)
+    const address = await addressModel.findById({_id:id})
+    res.render('editAddressform',{address:address})
+
+
+  }
+  catch(err){
+    console.log(err)
+  }
+
+}
 
 
 
@@ -768,6 +936,13 @@ module.exports = {
   userProfile,
   loadEditprofile,
   editProfile,
-  editAddress
+  loadeditAddress,
+  editAddress,
+  loadProfileAddress,
+  updateCartItem,
+  returnReqst,
+  usrDltAddress,
+  usrEditAddress,
+  loadusrEditAddress
 
 };

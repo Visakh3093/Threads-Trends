@@ -41,7 +41,7 @@
 
   <tr>
     <td> <%= i %> </td>
-    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong> <%= users[i-1].fname %></strong></td>
+    <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong> <%= users[i-1].name %></strong></td>
     <td> <%= users[i-1].email %></td>
     <td>
       <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
@@ -67,8 +67,8 @@
            
 
               <% if(users[i-1].isVerified) { %>
-                <a class="btn btn-danger text-white click" style="width: 100px;"
-                    href="/admin/blockUser?id=<%= users[i-1]._id %> ">Block</a>
+                <a class="btn btn-danger text-white " style="width: 100px;"
+                    href="/admin/blockUser?id=<%= users[i-1]._id %> " >Block</a>
                 <% } else { %>
                     <a  class="btn btn-info" style="width: 100px;"
                         href="/admin/blockUser?id=<%= users[i-1]._id %> ">Unblock</a>
@@ -137,7 +137,7 @@
 
 <!-- Core JS -->
 <!-- build:js assets/vendor/js/core.js -->
-
+<!-- 
 
 <script>
   $('.click').on('click',function (e) {
@@ -165,7 +165,7 @@
 
   })
 
-</script>
+</script> -->
 
 
 

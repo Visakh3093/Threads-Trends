@@ -69,8 +69,8 @@ const orderSchema = new mongoose.Schema({
   },
 
   status: {
-    type: Boolean,
-    default: true,
+    type: String,
+    default: 'Ordered',
   },
   productReturned: [
     {

@@ -1,0 +1,96 @@
+<%- include ('../partials/admin-header') %>
+<br><br>
+<br><br>
+<div class="container" style=" min-height: 100%; overflow: hidden;">
+<form action="/admin/datewiseReport" method="post"> 
+    <div class="row d-flex justify-content-center" style="padding-bottom: 40px; padding-top: 40px;" id="sales-div">
+        
+        <div class="col-md-3">
+        <input type="date" class="form-control" value="" name="Startingdate" style="width: 300px;">
+        <span class="text-primary">Enter the Starting date</span>
+        </div>
+        <div class="col-md-3">
+            <input type="date" class="form-control" value="" name="Endingdate" style="width: 300px;">
+            <span class="text-primary">Enter the Ending date</span>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" id="date-donfirm"
+                  class=" btn btn-success ">
+                  <span>Confirm Date</span>
+              </a>
+              </div>
+              </div>
+             </form>
+             <br>
+<br>
+
+<table class="table" style="max-width: 100%;
+    overflow-x: hidden;table-layout: fixed;
+        word-wrap: break-word;">
+    <div class="table-responsive text-nowrap">
+    <thead>
+    <tr>
+      <th>Order No</th>
+      <th>OrderId</th>
+      <th>User</th>
+      <th>Date</th>
+      <th>Payment</th>
+      <th>Total Price</th>
+      <th>Status</th>
+      
+      
+    </tr>
+    </thead>
+    <tbody>
+      <% if( order.length> 0){ %>
+        <% for(let i=1;i <=order.length; i++){ %>
+            <% if(order[i-1].status=="Delivered" ){ %>
+    
+    <tr>
+      <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong> <%= i %></strong></td>
+     
+      <td>
+        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center"></ul>
+          <%= order[i-1]._id %></td>
+      </ul>
+      <td>
+        <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+          <%= order[i-1].userId.name %>
+           
+        </ul>
+      </td>
+      <td>
+    
+        <%= order[i-1].createdAt.toDateString()%>
+    
+      </td>
+      <td >
+       <span style="white-space:nowrap"> <%= order[i-1].payment %></span>
+      </td>
+      <td>
+        <%= order[i-1].products.totalPrice %>
+      </td>
+    
+      <td class="text-success" >   <span style="white-space:nowrap"><i class="m-r-10 mdi mdi-account-off text-danger" style="width: 100px;">  <%= order[i-1].status %></i> </span></td>
+    
+     
+    
+    
+    
+    </tr>
+    <% }}}else{ %>
+    
+      <tr>
+        <td colspan="5">Orders Not Found</td>
+    </tr>
+    <% } %>
+    
+    
+    
+    </tbody>
+    
+    </table>
+</div>
+
+
+<%- include ('../partials/admin-footer') %>

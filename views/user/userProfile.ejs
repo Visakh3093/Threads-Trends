@@ -1,9 +1,11 @@
 <%- include('../partials/user-header') %>
 
 <br>
+<br>
+<br>
 
 
-<div class="container ">
+<!-- <div class="container ">
     <div class="row justify-content-center ">
      
    
@@ -29,8 +31,91 @@
   
   </div>
   </div>
-  <br><br><br><br>
+  <br><br><br><br> -->
 
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="card">
+  <img src="/logo/profile.jpg" alt="profile.jpg" style="width:100%" height="300px">
+  <h1><%= user.name %></h1>
+  <p class="title"> <%= user.email %></p>
+  <p>Threads & Trends</p>
+  <!-- <a href="#"><i class="fa fa-dribbble"></i></a>
+  <a href="#"><i class="fa fa-twitter"></i></a>
+  <a href="#"><i class="fa fa-linkedin"></i></a>
+  <a href="#"><i class="fa fa-facebook"></i></a> -->
+  <p><button data-toggle="modal" data-target="#exampleModal">Edit Profile</button></p>
+</div>
+<br>
+<br>
+<br>
+
+<style>
+  .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+
+</style>
+
+
+
+
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header d-flex">
+        <h5 class="modal-title d-flex" id="exampleModalLabel">Threads & Trends</h5>
+        <button type="button" class="close col-md-2" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <h1>Hai <%= user.name %> </h1> Here you want to edit your profile !
+      </div>
+      <div class="modal-footer col-md-12">
+        <a href="/editAdressProfile"><button type="button" class="btn btn-secondary">Edit Address</button></a>
+        <a href="/editProfile"><button type="button" class="btn btn-primary">Edit Profile</button></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <%- include('../partials/user-footer') %>

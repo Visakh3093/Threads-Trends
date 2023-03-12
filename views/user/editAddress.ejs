@@ -1,18 +1,24 @@
 <%- include('../partials/user-header') %>
-
+<style>
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
+</style>
 <section class="ftco-section">
   
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-8 ftco-animate">
          
-                      <form action="/addAddress" method="post" class="billing-form">
+                      <form action="/editAddress" method="post" class="billing-form">
                           <h3 class="mb-4 billing-heading">Update Address</h3>
+                          <input type="hidden" value="<%=address._id %>" name="id">
                 <div class="row align-items-end">
                     <div class="col-md-6">
                   <div class="form-group"> 
                       <label for="firstname">Full Name</label>
-                    <input type="text" name="fullname" class="form-control" value="">
+                    <input type="text" name="fullname" class="form-control" value="<%=address.fullname %>">
                   </div>
                 </div>
                 
@@ -20,56 +26,50 @@
                   <div class="col-md-6">
                       <div class="form-group">
                           <label for="country">State</label>
-                          <div class="select-wrap">
-                        <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                        <select name="state" id="" class="form-control">
-                            <option value="Kerala">Kerala</option>
-                          <option value="Thamilnadu">Thamilnadu</option>
-                          <option value="Rajasthan">Rajasthan</option>
-                          <option value="Goa">Goa</option>
-                         
-                        </select>
-                      </div>
+                          
+                          <input type="text" name="state" class="form-control" value="<%=address.state %>">
+
+
                       </div>
                   </div>
                   
-                  <div class="w-100"></div>
+                 
                   <div class="col-md-6">
                       <div class="form-group">
                       <label for="streetaddress">Town / City</label>
-                    <input type="text" name="city" class="form-control" placeholder="House number and street name">
+                    <input type="text" name="city" class="form-control" value="<%=address.city%>" placeholder="">
                   </div>
                   </div>
                   <div class="col-md-6">
                       <div class="form-group">
                         <label for="streetaddress">House No / Building Name</label>
-                    <input type="text" name="houseNo" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
+                    <input type="text" name="houseNo" class="form-control" value="<%=address.houseNo%>" placeholder="">
                   </div>
                   </div>
                   <div class="w-100"></div>
                   <div class="col-md-6">
                       <div class="form-group">
                       <label for="towncity">Road name,Area,Colony</label>
-                    <input type="text" name="roadName" class="form-control" placeholder="">
+                    <input type="text" name="roadName" class="form-control" value="<%=address.roadName %>" placeholder="">
                   </div>
                   </div>
                   <div class="col-md-6">
                       <div class="form-group">
                           <label for="postcodezip">Pincode*</label>
-                    <input type="number" name="pincode" class="form-control" placeholder="">
+                    <input type="number" name="pincode" class="form-control" value="<%=address.pincode %>" placeholder="">
                   </div>
                   </div>
                   <div class="w-100"></div>
                   <div class="col-md-6">
                   <div class="form-group">
                       <label for="phone">Phone</label>
-                    <input type="number" name="phone1" class="form-control" placeholder="">
+                    <input type="number" name="phone1" class="form-control" value="<%=address.phone1 %>" placeholder="">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                       <label for="emailaddress">Alternative Phone</label>
-                    <input type="number" name="phone2" class="form-control" placeholder="">
+                    <input type="number" name="phone2" class="form-control" value="<%=address.phone2 %>" placeholder="">
                   </div>
               </div>
               <div class="w-100"></div>

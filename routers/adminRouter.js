@@ -55,7 +55,29 @@ router.get('/unlistCategory',adminController.isLogin,adminController.unlistCateg
 
 router.get('/listCategory',adminController.isLogin,adminController.listCategory)
 
+router.get('/loadOrder',adminController.isLogin,adminController.loadOrderList)
 
+router.get('/deliveredOrder',adminController.isLogin,adminController.deliveredOrder)
+
+router.get('/confirmOrder',adminController.isLogin,adminController.confirmOrder)
+
+router.get('/cancelOrder',adminController.isLogin,adminController.cancelOrder)
+
+router.get('/returnOrder',adminController.isLogin,adminController.returnOrder)
+
+router.get('/orderDetail',adminController.isLogin,adminController.orderDetail)
+
+router.get('/CancelReqst',adminController.isLogin,adminController.CancelReqst)
+
+router.get('/salesReport',adminController.isLogin,adminController.salesReport)
+
+router.get('/loadBanner',adminController.isLogin,adminController.loadBanner)
+
+router.get('/loadAddBanner',adminController.isLogin,adminController.loadAddBanner)
+
+router.get('/unlist',adminController.isLogin,adminController.unlist)
+
+router.get('/list',adminController.isLogin,adminController.list)
 
 // post method
 
@@ -66,5 +88,9 @@ router.post("/addProduct",multer.upload.array("simage"),adminController.loadProd
 router.post("/editProduct",multer.upload.array("simage"),adminController.editProduct);
 
 router.post("/adminCategory",adminController.isLogin,adminController.addCategory)
+
+router.post("/datewiseReport",adminController.isLogin,adminController.datewiseReport)
+
+router.post('/addBanner',multer.upload.array("image"),adminController.addBanner)
 
 module.exports = router;

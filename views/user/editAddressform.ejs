@@ -5,58 +5,20 @@
     display: none;
   }
 </style>
-
-<div class="container ">
-  <div class="row justify-content-center ">
-    <%if(Address.length>0){
-  for(let key of Address){%>
- 
-    <div class="col-xl-8 ftco-animate">
-
-<div class="row mt-5 pt-3 ">
-  <div class="col-md-6 ">
-      <div class="cart-detail cart-total bg-light p-3 p-md-4">
-          <h3 class="billing-heading mb-4">Address</h3>
-          
-          <p class="">
-            <%= key.fullname %>
-            <br>
-            <%=key.houseNo%>,
-             <%= key.roadName %> <br>
-             <%=key.city %>
-              <%= key.state%>,
-              India - 
-              <%= key.pincode%><br><br>
-              <%= key.phone1%> &ensp; <%= key.phone2%> <br>                                                                                                   
-            
-            </p>
-                
-                </div>
-  </div>
-  
- 
-</div>
-   
-</div> 
-<%}}%>
-</div>
-</div>
-
-
-
 <section class="ftco-section">
   
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-xl-8 ftco-animate">
          
-                      <form action="/addAddress" method="post" class="billing-form">
+                      <form action="/usrEditAddress" method="post" class="billing-form">
                           <h3 class="mb-4 billing-heading">Update Address</h3>
+                          <input type="hidden" value="<%=address._id %>" name="id">
                 <div class="row align-items-end">
                     <div class="col-md-6">
-                  <div class="form-group">
+                  <div class="form-group"> 
                       <label for="firstname">Full Name</label>
-                    <input type="text" name="fullname" class="form-control" placeholder="">
+                    <input type="text" name="fullname" class="form-control" value="<%=address.fullname %>">
                   </div>
                 </div>
                 
@@ -64,47 +26,50 @@
                   <div class="col-md-6">
                       <div class="form-group">
                           <label for="country">State</label>
-                          <input type="text" name="state" class="form-control" value="" placeholder="">
+                          
+                          <input type="text" name="state" class="form-control" value="<%=address.state %>">
+
+
                       </div>
                   </div>
                   
-                  <div class="w-100"></div>
+                 
                   <div class="col-md-6">
                       <div class="form-group">
                       <label for="streetaddress">Town / City</label>
-                    <input type="text" name="city" class="form-control" placeholder="House number and street name">
+                    <input type="text" name="city" class="form-control" value="<%=address.city%>" placeholder="">
                   </div>
                   </div>
                   <div class="col-md-6">
                       <div class="form-group">
                         <label for="streetaddress">House No / Building Name</label>
-                    <input type="text" name="houseNo" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
+                    <input type="text" name="houseNo" class="form-control" value="<%=address.houseNo%>" placeholder="">
                   </div>
                   </div>
                   <div class="w-100"></div>
                   <div class="col-md-6">
                       <div class="form-group">
                       <label for="towncity">Road name,Area,Colony</label>
-                    <input type="text" name="roadName" class="form-control" placeholder="">
+                    <input type="text" name="roadName" class="form-control" value="<%=address.roadName %>" placeholder="">
                   </div>
                   </div>
                   <div class="col-md-6">
                       <div class="form-group">
                           <label for="postcodezip">Pincode*</label>
-                    <input type="number" name="pincode" class="form-control" placeholder="">
+                    <input type="number" name="pincode" class="form-control" value="<%=address.pincode %>" placeholder="">
                   </div>
                   </div>
                   <div class="w-100"></div>
                   <div class="col-md-6">
                   <div class="form-group">
                       <label for="phone">Phone</label>
-                    <input type="number" name="phone1" class="form-control" placeholder="">
+                    <input type="number" name="phone1" class="form-control" value="<%=address.phone1 %>" placeholder="">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                       <label for="emailaddress">Alternative Phone</label>
-                    <input type="number" name="phone2" class="form-control" placeholder="">
+                    <input type="number" name="phone2" class="form-control" value="<%=address.phone2 %>" placeholder="">
                   </div>
               </div>
               <div class="w-100"></div>
@@ -122,5 +87,5 @@
     </div>
   </section>
 
-<%- include('../partials/user-footer') %>
 
+<%- include('../partials/user-footer') %>

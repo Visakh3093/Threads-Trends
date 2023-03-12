@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>  
-<form action="/order" method="post">
+  <form action="/addAddress" method="POST">
   <section class="ftco-section d-flex">
     <div class="container">
       <div class="row d-flex ">
@@ -25,13 +25,13 @@
           <form action="/addAddress" method="post" class="billing-form">
             <h3 class="mb-4 billing-heading">BILLING DETAILS</h3>
   
-    <%   if(addSelect!=null){  %>
+  
       <div class="row align-items-end">
         <div class="col-md-6">
     <div class="form-group">
         <label for="firstname">Full Name</label>
       
-      <input type="text" name="fullname" class="form-control" value="<%=addSelect.fullname %> " placeholder="">
+      <input type="text" name="fullname" class="form-control" value="" placeholder="">
     </div>
   </div>
   
@@ -40,7 +40,7 @@
         <div class="form-group">
             <label for="country">State</label>
            
-              <input type="text" name="state" class="form-control" value="<%=addSelect.state %> " placeholder="">
+              <input type="text" name="state" class="form-control" value="" placeholder="">
           
             <!-- <option value="" aria-placeholder="">Kerala</option> -->
              
@@ -53,92 +53,107 @@
     <div class="col-md-6">
         <div class="form-group">
         <label for="streetaddress">Town / City</label>
-      <input type="text" name="city" class="form-control" value="<%=addSelect.city %>" placeholder="">
+      <input type="text" name="city" class="form-control" value="" placeholder="">
     </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
           <label for="streetaddress">House No / Building Name</label>
-      <input type="text" name="houseNo" class="form-control" value="<%=addSelect.houseNo %>" placeholder="">
+      <input type="text" name="houseNo" class="form-control" value="" placeholder="">
     </div>
     </div>
     <div class="w-100"></div>
     <div class="col-md-6">
         <div class="form-group">
         <label for="towncity">Road name,Area,Colony</label>
-      <input type="text" name="roadName" class="form-control" value="<%=addSelect.roadName %>" placeholder="">
+      <input type="text" name="roadName" class="form-control" value="" placeholder="">
     </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
             <label for="postcodezip">Pincode*</label>
-      <input type="number" name="pincode" class="form-control" value="<%=addSelect.pincode %>" placeholder="">
+      <input type="number" name="pincode" class="form-control" value="" placeholder="">
     </div>
     </div>
     <div class="w-100"></div>
     <div class="col-md-6">
     <div class="form-group">
         <label for="phone">Phone</label>
-      <input type="number" name="phone1" class="form-control" value="<%=addSelect.phone1 %>" placeholder="">
+      <input type="number" name="phone1" class="form-control" value="" placeholder="">
     </div>
   </div>
   <div class="col-md-6">
     <div class="form-group">
         <label for="emailaddress">Alternative Phone</label>
-      <input type="number" name="phone2" class="form-control" value="<%=addSelect.phone2 %>" placeholder="">
+      <input type="number" name="phone2" class="form-control" value="" placeholder="">
     </div>
 </div>
 </div>
 <div class="w-100"></div>
-<!-- <div class="form-group">
-  <input type="submit" style="margin-left: 170px;" value="Update Address" class="btn btn-primary py-3 px-5">
-</div> -->
+<div class="form-group">
+  <input type="submit" style="margin-left: 170px;" value="Add Address" class="btn btn-primary py-3 px-5">
+</div>
 
 </div>
 
 </div>    
+</form>
+
+
+<form action="/order" method="post">
 <div class="col-md-6 d-flex">
   <div class="cart-detail cart-total bg-light p-3 p-md-4">
       <h3 class="billing-heading mb-4">Select One Address</h3>
       <p class="d-flex">
         <div class="row">
+
+         
+           
+          
           <%if(userAddress.length>0){
               for(let key of userAddress){%>
               
-
-                <a href="/checkout?addressid=<%=key._id%>">
+ 
+                
                   <div class="col-md-6 form-group p_star">
                       
-                    <a href="/checkout?addressid=<%=key._id%>">
+                   
 
                           <div class="card card-dashboard">
   
                              
-                            <a href="/checkout?addressid=<%=key._id%>">
+                            
                                   <div class="card-body">
                                       <h3 class="card-title">Shipping
                                           Address</h3>
+
+                                        
                                                          
                                        <p>
-                                       <%= key.fullname %>
+                                        <label><input type="radio" name="address" value="<%=key._id%>" class="mr-2" checked> <%=key.fullname %></label>
+
+                                      
                                        <br>
                                        <%=key.houseNo%>,
                                        <%= key.roadName %>
                                        <%=key.city %>
                                       <br>
-                                      <%= key.phone1%> &ensp; <%= key.phone2%>   
-                                <a href=""><i class=""></i></a> 
-                               <a href="/dltAddress?addressid=<%=key._id%>"><i class="icon-close"></i>delete</a>
+                                      <%= key.phone1%> &ensp; <%= key.phone2%>
+                                   
+                                    <br>
+                    <br>
+                                <a href="/editAddress?addressid=<%=key._id%>"><i class="icon-edit" ></i>Edit</a> &nbsp; &nbsp;
+                               <a href="/dltAddress?addressid=<%=key._id%>"><i class="icon-close"></i>Delete</a>
                               </p>
                                   </div>
                               </a>
                               
                           </div>
-                      </a>
-                      <!-- End .card-dashboard -->
+                      
+              
                   </div>
-              </a>
-              <!-- End .col-lg-6 -->
+            
+              
               <%}}else{%>
   
                   <div class="col-lg-6">
@@ -156,138 +171,9 @@
                   <%}%>
                  
       </div>
-      <% }else{ %>
-        <div class="row align-items-end">
-        <div class="col-md-6">
-    <div class="form-group">
-        <label for="firstname">Full Name</label>
-      
-      <input type="text" name="fullname" class="form-control" value="" placeholder="">
-    </div>
-  </div>
-  
 
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="country">State</label>
-           
-              <input type="text" name="fullname" class="form-control" value="" placeholder="">
-          
-            <!-- <option value="" aria-placeholder=""></option> -->
-             
-           
-        </div>
-        </div>
+
     
-    
-    <div class="w-100"></div>
-    <div class="col-md-6">
-        <div class="form-group">
-        <label for="streetaddress">Town / City</label>
-      <input type="text" name="city" class="form-control" placeholder="">
-    </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-          <label for="streetaddress">House No / Building Name</label>
-      <input type="text" name="houseNo" class="form-control" placeholder="">
-    </div>
-    </div>
-    <div class="w-100"></div>
-    <div class="col-md-6">
-        <div class="form-group">
-        <label for="towncity">Road name,Area,Colony</label>
-      <input type="text" name="roadName" class="form-control" placeholder="">
-    </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="postcodezip">Pincode*</label>
-      <input type="number" name="pincode" class="form-control" placeholder="">
-    </div>
-    </div>
-    <div class="w-100"></div>
-    <div class="col-md-6">
-    <div class="form-group">
-        <label for="phone">Phone</label>
-      <input type="number" name="phone1" class="form-control" placeholder="">
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="form-group">
-        <label for="emailaddress">Alternative Phone</label>
-      <input type="number" name="phone2" class="form-control" placeholder="">
-    </div>
-</div>
-</div>
-<div class="w-100"></div>
-<!-- <div class="form-group">
-  <input type="submit" style="margin-left: 170px;" value="Add New Address" class="btn btn-primary py-3 px-5">
-</div> -->
-
-</div>
-
-</div>    
-<div class="col-md-6 d-flex">
-  <div class="cart-detail cart-total bg-light p-3 p-md-4">
-      <h3 class="billing-heading mb-4">Select One Address</h3>
-      <p class="d-flex">
-        <div class="row">
-          <%if(userAddress.length>0){
-              for(let key of userAddress){%>
-              <a href="/checkout?addressid=<%=key._id%>">
-                  <div class="col-md-6 form-group p_star">
-                      <a href="/checkout?addressid=<%=key._id%>">
-                          <div class="card card-dashboard">
-  
-                              <a href="/checkout?addressid=<%=key._id%>">
-                                  <div class="card-body">
-                                      <h3 class="card-title">Shipping
-                                          Address</h3>
-                                                         
-                                       <p>
-                                       <%= key.fullname %>
-                                       <br>
-                                       <%=key.houseNo%>,
-                                       <%= key.roadName %>
-                                       <%=key.city %>
-                                      <br>
-                                      <%= key.phone1%> &ensp; <%= key.phone2%>   
-                                <a href="#"><i class=""></i></a> 
-                               <a href=""><i class="icon-close"></i>delete</a>
-                              </p>
-                                  </div>
-                              </a>
-                              
-                          </div>
-                      </a>
-                      <!-- End .card-dashboard -->
-                  </div>
-              </a>
-              <!-- End .col-lg-6 -->
-              <%}}else{%>
-  
-                  <div class="col-lg-6">
-                      <a href="">
-                          <div class="card card-dashboard">
-                              <div class="card-body">
-                                  <h3 class="card-title">Shipping Address
-                                  </h3>
-  
-                                  <p>You have not add your address yet.Please Add Address and Place your order
-                              </div>
-                          </div>
-                      </a>
-                  </div>
-                  <%}%>
-                 
-      </div>
-    </div>
-  </div> 
-      <% } %> 
-
-
-      </div>  
 
     </section>
 
@@ -323,17 +209,11 @@
             
               <div class="cart-detail bg-light p-3 p-md-4">
                   <h3 class="billing-heading mb-4">Payment Method</h3>
+                           
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="radio">
-                                       <label><input type="radio" name="Payment" value="upi" class="mr-2"> UPI </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <div class="radio">
-                                       <label><input type="radio" value="cod" name="Payment" class="mr-2">Cash on delivery</label>
+                                       <label><input type="radio" value="cod" name="Payment" class="mr-2" checked>Cash on delivery</label>
                                     </div>
                                 </div>
                             </div>
@@ -351,7 +231,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <%if(userAddress.length>0){%>
                             <input type="submit" class="btn btn-primary py-3 px-4" value="Place Your Order">
+                            <%}else{%>
+                              <input type="" class="btn btn-primary py-3 px-4" data-toggle="modal" data-target="#exampleModal" value="Place Your Order">
+<%}%>
                         </div>
           </div> 
       </div>
@@ -360,5 +244,25 @@
   </form>
   <br>
   <br>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header d-flex">
+        <h5 class="modal-title d-flex" id="exampleModalLabel">Threads & Trends</h5>
+        <button type="button" class="close col-md-2" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <h1> Please Add a Valid Address</h1>
+      </div>
+      <div class="modal-footer col-md-12">
+        
+       <a> <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">OK</button></a>
+      </div>
+    </div>
+  </div>
+</div>
 
   <%- include('../partials/user-footer') %>

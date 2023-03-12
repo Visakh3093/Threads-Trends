@@ -1,34 +1,7 @@
-<%- include('../partials/user-header') %>
 
 
-<style>
-	.mb-3, .my-3 {
-    margin-bottom: 0rem !important;
-}
-</style>
-<br><br>
-<!-- 		
-      <section class="ftco-section ftco-cart">
-			<div class="container">
-				<div class="row">
-    			<div class="col-md-12 ftco-animate">
-    				<div class="cart-list">
-	    				<table class="table">
-						    <thead class="">
-						      <tr class="text-center">
-						    
-						        <th>&nbsp;</th>
-						  
-							 
-						    </tbody>
-						  </table>
-					  </div>
-    			</div>
-    		</div>
-    		
-			</div>
-		
-		</section> -->
+<%- include ('../partials/admin-header') %>
+
 
 	
 <section class="h-100 gradient-custom">
@@ -36,9 +9,9 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-lg-10 col-xl-8">
           <div class="card" style="border-radius: 10px;">
-            <div class="card-header px-4 py-5">
+            <!-- <div class="card-header px-4 py-5">
               <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: #ff0000;"  class="text-uppercase"><%= user.name %></span>!</h5>
-            </div>
+            </div> -->
             <div class="card-body p-4">
               <div class="d-flex justify-content-between align-items-center mb-4">
                 <p class="lead fw-normal mb-0" style="color: #ff0000;">Receipt</p>
@@ -99,8 +72,8 @@
                 <br>
                 <br> -->
                 <div class="mb-0">
-                  <div class="d-flex justify-content-around mb-1">
-                    <p class="text-muted pt-2 " style="width: 400px; color: #ea1717;"><%= order.status %></p>
+                  <div class="d-flex justify-content-around mb-1" style="color: #000000;"">
+                    <p class="text-muted pt-2 " style="width: 400px; color: #000000;"><%= order.status %></p>
                   </div>
                 </div>
               </div>
@@ -137,24 +110,18 @@
               </div>
             </div>
             <div class="card-footer border-0 px-4 py-5"
-              style="background-color: #ffa45c;  ">
-              <h5 class="">Total
-                paid: <span class="">₹<%=order.products.totalPrice %></span></h5>
+              style="background-color: #793fff;  ">
+              <h5 class="" style="color: #fefeff;  ">Total
+                paid:&nbsp; <span class="" > ₹<%=order.products.totalPrice %>&nbsp;/-</span></h5>
             </div>
           </div>
         </div>
       </div>
     </div>
-	<% if(orders.status ==='Delivered'){ %>
-			 
-		<a href="/returnOrder?id=<%=orderId%>" class="btn btn-outline-danger mb-1" style="margin-left: 600px; margin-top: 50px; border-radius: 5px;">Return Order</a>
-		<% }else{} %>
-  </section>
+	
 
   <br><br><br>
 
-        
+       
 
-  
-
-  <%- include('../partials/user-footer') %>
+<%- include ('../partials/admin-footer') %>

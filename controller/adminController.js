@@ -1,13 +1,23 @@
 const userModel = require("../models/userModel");
 const productModel = require("../models/productModel");
-const categorySchema = require("../models/categoryModel")
+const categorySchema = require("../models/categoryModel");
+const orderModel = require("../models/ordersModel");
+const bannerModel = require("../models/bannerModel")
+
 
 
 
 
 
 const adminLogin = (req, res) => {
-  res.render("admin-login");
+  try{
+    res.render("admin-login");
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
 };
 
 const getAdmin = (req, res) => {
@@ -269,11 +279,153 @@ const addCategory = async (req,res)=>{
   }
 }
 
-const orderList = async(req,res)=>{
+
+
+const loadOrderList = async (req,res)=>{
+  try{
+    const orderData = await orderModel.find().sort({createdAt:-1})
+    const productData = await productModel.find()
+    const userData = await userModel.find({is_admin:false})
+    for (let key of orderData){
+      await key.populate('products.item.productId')
+      await key.populate('userId')
+    }
+    console.log(orderData)
+    const id = req.query.id
+  if(id)
+  {
+    res.render('admin-orderlist',{order:orderData,id,product:productData,users:userData})
+  }
+  else
+  {
+    res.render('admin-orderlist',{order:orderData,id:'ALL',product:productData,users:userData})
+
+  }
+        
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+
+const deliveredOrder = async(req,res)=>{
   try{
 
-    
+    const id = req.query.id;
+    await orderModel.findByIdAndUpdate({_id:id},{$set:{status:'Delivered'}})
+    res.redirect('/admin/loadOrder')
 
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const confirmOrder = async(req,res)=>{
+  try{
+    const id = req.query.id
+    await orderModel.findByIdAndUpdate({_id:id},{$set:{status:'Confirmed'}})
+    res.redirect('/admin/loadOrder')
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const returnOrder = async (req,res)=>{
+  try{
+    const id = req.query.id
+    await orderModel.findByIdAndUpdate({_id:id},{$set:{status:'Returned'}})
+    res.redirect('/admin/loadOrder')
+
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
+const cancelOrder = async(req,res)=>{
+  try{
+    const id = req.query.id;
+    await orderModel.findByIdAndUpdate({_id:id},{$set:{status:'Canceled'}})
+    res.redirect('/admin/loadOrder')
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const orderDetail = async(req,res)=>{
+  try{
+
+    const id = req.query.id
+    // const userData = await userModel.find()
+    const order = await orderModel.findById({_id:id})
+    const completeOrder = await order.populate('products.item.productId')
+    // const user = await order.populate('userId')
+    const userData = await userModel.find({_id:completeOrder.userId})
+    // console.log(userData)
+    res.render('admin-viewOrder',{order:completeOrder,users:userData,id:completeOrder.userId,user:userData})
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const CancelReqst = async (req,res)=>{
+  try{
+    const id = req.query.id;
+    await orderModel.findByIdAndUpdate({_id:id},{$set:{status:"Return Request Canceled"}})
+    res.redirect('/admin/loadOrder')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const salesReport = async (req,res)=>{
+  try{
+    const orderData = await orderModel.find().sort({createdAt:-1})
+    const productData = await productModel.find()
+    const userData = await userModel.find({is_admin:false})
+    for (let key of orderData){
+      await key.populate('products.item.productId')
+      await key.populate('userId')
+    }
+    res.render('sales-Report',{order:orderData,product:productData,users:userData})
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const datewiseReport = async(req,res)=>{
+  try{
+
+    const sales = await orderModel.find({ $and: [
+      { createdAt: { $gte: req.body.Startingdate } },
+      {createdAt: { $lte: req.body.Endingdate } },
+      { status: "Delivered" }
+    ]})
+    // const productData = await productModel.find()
+    // const userData = await userModel.find({is_admin:false})
+    for (let key of sales){
+      await key.populate('products.item.productId')
+      await key.populate('userId')
+    }
+
+    res.render('datewiseReport',{order:sales})
 
 
   }
@@ -283,6 +435,79 @@ const orderList = async(req,res)=>{
   }
 }
 
+
+const loadBanner = async (req,res)=>{
+  try{
+    const bannerData = await bannerModel.find()
+
+    res.render('admin-banner',{banner:bannerData})
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const loadAddBanner = (req,res)=>{
+  try{
+    res.render('add-banner')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const addBanner = async(req,res)=>{
+  try{
+  //    const des = req.body.description
+     const images = req.files
+
+  const banner = await new bannerModel({
+    description:req.body.description,
+    image:images.map((x)=>x.filename)
+    
+  
+  })
+  await banner.save().then(()=>console.log('banner Saved'))
+  res.redirect('/admin/loadBanner')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const unlist = async (req,res)=>{
+  try{
+    console.log('1')
+    await bannerModel.findByIdAndUpdate({_id:req.query.id},{$set:{isAvailable:false}})
+    console.log('2')
+    res.redirect('/admin/loadBanner')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
+
+const list = async (req,res)=>{
+  try{
+    console.log('1')
+    await bannerModel.findByIdAndUpdate({_id:req.query.id},{$set:{isAvailable:true}})
+    console.log('2')
+    res.redirect('/admin/loadBanner')
+
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+}
 
 module.exports = {
   getAdmin,
@@ -301,5 +526,19 @@ module.exports = {
   loadCategory,
   unlistCategory,
   listCategory,
-  addCategory
+  addCategory,
+  loadOrderList,
+  deliveredOrder,
+  confirmOrder,
+  returnOrder,
+  cancelOrder,
+  orderDetail,
+  CancelReqst,
+  salesReport,
+  datewiseReport,
+  loadBanner,
+  loadAddBanner,
+  addBanner,
+  unlist,
+  list
 };

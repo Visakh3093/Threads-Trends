@@ -1,0 +1,143 @@
+<%- include ('../partials/admin-header') %>
+
+
+<!-- Content wrapper -->
+<div class="content-wrapper">
+  <!-- Content -->
+
+  <div class="container-xxl flex-grow-1 container-p-y">
+    <form action=""></form>
+    <a class="btn btn-primary" href="/admin/loadAddBanner">Add Banner</a>
+
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light"></span> </h4>
+
+
+<div class="card">
+<h5 class="card-header">Banner list</h5>
+<div class="table-responsive text-nowrap">
+<table class="table">
+<thead>
+
+</thead>
+<thead>
+  <th>SI NO</th>
+<!-- <th>Name</th> -->
+<th>Image</th>
+<th>Description</th>
+<!-- <th>Price</th> -->
+<!-- <th>Rating</th> -->
+  <th>Status</th>
+  
+  
+  <th>Action</th>
+</thead>
+<!-- table body paste here from product-sample.ejs file....... -->
+
+
+
+<tbody>
+  <% if(banner.length> 0){ %>
+    <% for(let i=1;i <=banner.length; i++){ %>  
+     
+        
+        <tr>
+          <td><%= i %> </td>
+          
+      
+        <td>
+          <% if(banner[i-1].image) { %>
+              <img src="/admin/uploadedimages/<%= banner[i-1].image[0] %>"
+                  width="100vw" height="100vh">
+              <% }else{ %>
+                  Image Not Found
+                  <% } %>
+      </td>
+      <td>
+        <%=banner[i-1].description %>
+      </td>
+      
+     
+      <td>
+        <span class="badge bg-label-primary me-1" style="width: 100px;" > <% if(banner[i-1].isAvailable){ %> 
+          <label class="">
+              <i class="m-r-10 mdi mdi-account-off text-success" style="width: 100px;">Active</i></label>
+          <% } else { %>
+              <label class="">
+                  <i class="m-r-10 mdi mdi-account-off text-danger" style="width: 100px;">inActive</i></label>
+              <% } %>
+                  </label></span>
+      </td>
+   
+      <td>
+        <div class="dropdown">
+           
+
+          <% if(banner[i-1].isAvailable==false) { %>
+            <a class="btn btn-danger text-white " style="width: 100px;"
+                href="/admin/list?id=<%= banner[i-1]._id %> " >list</a>
+            <% } else { %>
+                <a  class="btn btn-info" style="width: 100px;"
+                    href="/admin/unlist?id=<%= banner[i-1]._id %> ">Unlist</a>
+                <% } %>
+
+
+
+    
+  </div>
+                    
+        </td>
+        
+  </tr>
+  <% } } else{ %>
+      <tr>
+          <td colspan="5">Products Not Found</td>
+      </tr>
+      <% } %>
+  
+</tbody>
+
+
+
+
+</table>
+</div>
+</div>
+
+
+
+  <!-- Footer -->
+  <footer class="content-footer footer bg-footer-theme">
+      <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+        <div class="mb-2 mb-md-0">
+         
+      
+
+        </div>
+        <div>
+          
+    </footer>
+    <!-- / Footer -->
+
+    <div class="content-backdrop fade"></div>
+  </div>
+  <!-- Content wrapper -->
+</div>
+<!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+
+
+
+
+
+
+
+<%- include ('../partials/admin-footer') %>

@@ -10,9 +10,15 @@
 	.mb-3, .my-3 {
     margin-bottom: 0rem !important;
 }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
+
 </style>
 	
-		
+<% if(cartProduct.totalPrice > 0) {%>
       <section class="ftco-section ftco-cart">
 			<div class="container">
 				<div class="row">
@@ -53,26 +59,22 @@
 						        <td class="quantity">
 									<div class="input-group d-flex mb-3">
 										<span class="input-group-btn mr-2" >
-										   <button type="button" class="quantity-left-minus btn" style="border-radius: 0px;" data-type="minus"  data-field="">
+										   <button type="button" class="quantity-left-minus btn decrement-btn" style="border-radius: 0px;" data-type="minus" data-product-id="<%= key.productId._id%>" data-field="">
 										  <i class="ion-ios-remove"></i>
 										   </button>
 										   </span>
-										   <input type="hidden" value="<%= key.productId._id%>">
-										<input type="number" id="quantity" name="quantity" class="form-control input-number" value="<%=key.qty%>" min="1" max="<%= key.productId.quantity%>" step="1" data-decimals="0" required style="height:max-content">
+										   <input type="hidden"  value="<%= key.productId._id%>">
+										<input type="number" id="qty" name="quantity" class="form-control input-number qty" value="<%=key.qty%>" min="1" style=" caret-color: transparent;"  required style="height:max-content" readonly>
 										<span class="input-group-btn ml-2">
-										   <button type="button" class="quantity-right-plus btn" style="border-radius: 0px;" data-type="plus" data-field="">
+										   <button type="button" class="quantity-right-plus btn increment-btn" style="border-radius: 0px;" data-type="plus" data-product-id="<%= key.productId._id%>" data-field="">
 											<i class="ion-ios-add"></i>
 										</button>
 										</span>
 									 </div>
-						        	<!-- <div class="input-group mb-3">
-										<input type="hidden" value="                  ">
-
-					             	<input type="number" name="qty" class="quantity form-control input-number" value="                     " min="1" max="						" step="1" data-decimals="0" required style="height:max-content">
-					          	</div> -->
+						        	
 					          </td>
 						        
-						        <td class="total">₹<%=key.qty*key.productId.price%></td>
+						        <td class="total" id="price1">₹ <%=key.qty*key.productId.price%></td>
 						       </tr>
 							  <% }}else { %>
 								<p>login</p>
@@ -89,13 +91,14 @@
 					  </div>
     			</div>
     		</div>
+			
     		<div class="row justify-content-center">
     			<div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate">
     				<div class="cart-total mb-3">
     					<h3>Cart Totals</h3>
-    					<p class="d-flex">
+    					<p class="d-flex"><div >
     						<span>Subtotal</span>
-    						<span>₹<%=cartProduct.totalPrice %> </span>
+    						<span id="subtotal">₹<%=cartProduct.totalPrice %> </span></div>
     					</p>
     					<p class="d-flex">
     						<span>Delivery</span>
@@ -107,8 +110,8 @@
     					</p>
     					<hr>
     					<p class="d-flex total-price">
-    						<span>Total</span>
-    						<span>₹<%=cartProduct.totalPrice %></span>
+    						<span>Total</span><div id="price">
+    						<span>₹<%=cartProduct.totalPrice %></span></div>
     					</p>
     				</div>
 					<% if(cartProduct.totalPrice > 0 ){ %> 
@@ -118,8 +121,13 @@
 						<% } %> 
     			</div>
     		</div>
+			
 			</div>
 		</section>
+		<% }else{ %>
+			<br><br><div class="d-flex justify-content-center "><lottie-player class="" src="https://assets6.lottiefiles.com/temp/lf20_jzqS18.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player></div>
+			<br><br><br><br>
+			<% } %> 
 
         
 
@@ -170,7 +178,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script> 
-
+<!-- 
   <script>
 		$(document).ready(function(){
 
@@ -207,5 +215,74 @@
 		    
 		});
 	</script>
+ -->
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+
+$('.increment-btn').click(function(e) {
+  e.preventDefault();
+  var inputEl = $('.qty');
+  var productId = $(this).data('product-id');
+  var qty = parseInt(inputEl.val());
+  console.log(qty);
+  console.log(productId);
+   //var maxQty = 
+  ////console.log(maxQty); 
+  //if (qty < maxQty) {
+   qty++;
+   inputEl.val(qty);
+    updateCartItem(productId, qty);
+  }
+);
+
+// decrement button
+$('.decrement-btn').click(function(e) {
+  e.preventDefault();
+  var inputEl = $('.qty');
+  var productId = $(this).data('product-id');
+  var qty = parseInt(inputEl.val());
+  if (qty > '1') {
+    qty--;
+    inputEl.val(qty);
+    updateCartItem(productId, qty);
+  }else{
+
+	 inputEl.val('1');
+    updateCartItem(productId, '1');
+
+  }
+  
+});
+
+// function to update cart item quantity using AJAX
+      function updateCartItem(productId, qty) {
+        $.ajax({
+          url: '/updateCartItem',
+          type: 'POST',
+          data: { productId: productId, qty: qty },
+          success: function(data) {
+            // update subtotal and grand total
+            console.log(data);
+            const productPrice = data.productPrice;
+            const newPrice = productPrice * qty;
+            $('#price').text(newPrice);
+			$('#price1').text(newPrice);
+			$('#qty').text(data.qtyChange)
+            $('#subtotal').text(data.subtotal);
+           // $('#totalart').text(data.grandTotal); 
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus, errorThrown);
+          }
+        });
+      }
+</script>
+
     
  <%- include('../partials/user-footer') %>

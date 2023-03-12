@@ -28,15 +28,15 @@ router.use(express.json());
 router.use(express.urlencoded({extended:true}))
 
 
-router.get('/',userController.isLogin,userController.getUserHome) 
+router.get('/',userController.isLogin,userController.getUserHome)               
 
-router.get('/login',userController.isLogin,userController.getLogin)
+router.get('/login',userController.getLogin)
  
 router.get('/register',userController.isLogin,userController.getRegister)
 
 router.get('/logout',userController.isLogout)
 
-router.get('/home',userController.isLogin,userController.getUserHome)
+router.get('/home',userController.isUser,userController.getUserHome)
 
 router.get('/shop',userController.getShop)    
 
@@ -47,7 +47,6 @@ router.get('/checkOut',userController.isUser,userController.checkOut)
 router.get('/singleProduct',userController.singleProduct)     
 
 router.get('/cart',userController.isUser,userController.loadCart)
-
 
 router.get('/deleteCart',userController.isUser,userController.deleteCart)
 
@@ -77,16 +76,23 @@ router.get('/userProfile',userController.isUser,userController.userProfile)
 
 router.get('/editProfile',userController.isUser,userController.loadEditprofile)
 
-router.get('/editAddress',userController.isUser,userController.editAddress)
+router.get('/editAddress',userController.isUser,userController.loadeditAddress)
+
+router.get('/editAdressProfile',userController.isUser,userController.loadProfileAddress)
+
+router.get('/returnOrder',userController.isUser,userController.returnReqst)
+
+router.get('/usrDltAddress',userController.isUser,userController.usrDltAddress)
+
+router.get('/usrEditAddress',userController.isUser,userController.loadusrEditAddress)
 
 // post method  
-
 
 router.post('/register',userController.addUser,userController.loadOtp)
 
 router.post('/addtocart',userController.isUser,userController.addToCart)
 
-router.post('/login',userController.verifyuser,userController.getUserHome)
+router.post('/login',userController.verifyuser)
 
 router.post('/addAddress',userController.isUser,userController.addAddress)
 
@@ -97,5 +103,11 @@ router.post('/order',userController.isUser,userController.order)
 router.post('/razorpay',userController.isUser,userController.razorpayCheckout,userController.orderSucces)
 
 router.post('/editProfile',userController.isUser,userController.editProfile)
+
+router.post('/editaddress',userController.isUser,userController.editAddress)
+
+router.post('/usrEditAddress',userController.isUser,userController.usrEditAddress)
+
+router.post('/updateCartItem',userController.isUser,userController.updateCartItem)
 
 module.exports = router

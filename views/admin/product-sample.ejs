@@ -83,7 +83,10 @@ India -
 
 
 
-
+<% if(order ==='Delivered'){ %>
+			 
+       <a href="/returnOrder?id=<%=orderId %>" class="btn btn-outline-danger mb-1" style="margin-left: 1127px; border-radius: 5px;">Return Order</a>
+       <% }else{} %>
 
 
 
@@ -96,3 +99,18 @@ color: black;
 position: absolute;
 margin-top: -8px;
 margin-left: -47px;" href="">Use this address</a></button> 
+
+
+
+
+
+
+<% if(banner.length >0 ){ %>
+				<% for(let i=0;i<banner.length;i++){ %>
+
+
+
+
+          <% }}else{ %>
+			<div><h1>No Banner Found</h1></div>
+			<% } %>

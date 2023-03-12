@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const adminRouter = require("./routers/adminRouter");
 const userRouter = require("./routers/userRouter");
-// const cookieParser = require('cookie-parser')
 
 const app = express();
 
@@ -31,15 +30,15 @@ adminRouter.use(express.static("./public/admin"));
 
 // mongo db connection
 
-const DB = process.env.mongodb
+// const DB = process.env.mongodb
 mongoose.set("strictQuery", true);
 const conn = async () => {
-  await mongoose.connect(DB, () => {
+   mongoose.connect("mongodb://127.0.0.1:27017/project", () => {
     console.log("database connected");
   });
 };
 conn().then(
   app.listen(PORT, () => {
     console.log("server started on port " + PORT);
-  })
-);
+  }) 
+).catch((err)=>console.log(err))

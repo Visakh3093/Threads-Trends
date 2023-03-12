@@ -1,0 +1,84 @@
+<%- include('../partials/user-header') %>
+<br>
+<br>
+<div class="col-md-6 d-flex">
+    <div class="cart-detail cart-total bg-light p-3 p-md-4">
+        <h3 class="billing-heading mb-4">Select One Address</h3>
+        <p class="d-flex">
+          <div class="row">
+            <%if(userAddress.length>0){
+            if(userAddress.length>0){
+                for(let key of userAddress){%>
+                
+   
+                  
+                    <div class="col-md-6 form-group p_star">
+                        
+                     
+  
+                            <div class="card card-dashboard">
+    
+                               
+                              
+                                    <div class="card-body">
+                                        <h3 class="card-title">Shipping
+                                            Address</h3>
+  
+                                          
+                                                           
+                                         <p>
+                                          <label><input type="radio" name="address" value="<%=key._id%>" class="mr-2"> <%=key.fullname %></label>
+  
+                                        
+                                         <br>
+                                         <%=key.houseNo%>,
+                                         <%= key.roadName %>
+                                         <%=key.city %>
+                                        <br>
+                                        <%= key.phone1%> &ensp; <%= key.phone2%>
+                                     
+                                      <br>
+                      <br>
+                                  <a href="/usrEditAddress?addressid=<%=key._id%>"><i class="icon-edit" ></i>Edit</a> &nbsp; &nbsp;
+                                 <a href="/usrDltAddress?id=<%=key._id%>"><i class="icon-close"></i>Delete</a>
+                                </p>
+                                    </div>
+                                </a>
+                                
+                            </div>
+                        
+                
+                    </div>
+              
+                
+                <%}}else{%>
+    
+                    <div class="col-lg-6">
+                        <a href="">
+                            <div class="card card-dashboard">
+                                <div class="card-body">
+                                    <h3 class="card-title">Shipping Address
+                                    </h3>
+    
+                                    <p>You have not add your address yet.Please Add Address and Place your order 
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <%}}else{%>
+                        <div>no address found</div>
+
+                        <%}%>
+                   
+        </div>
+        </div>
+        </div>
+        <br><br><br>
+  
+  
+      
+
+
+
+
+<%- include('../partials/user-footer') %>
