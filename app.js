@@ -8,11 +8,11 @@ const app = express();
 require('dotenv').config
 
 //port setting
-const PORT = process.env.PORT || 7000;
+
 
 // view engine setup
 app.set("view engine", "ejs");
-userRouter.set("views", "./views/user");
+app.set("views", "./views/user");
 adminRouter.set("views", "./views/admin");
 
 // router setup
@@ -30,15 +30,32 @@ adminRouter.use(express.static("./public/admin"));
 
 // mongo db connection
 
-// const DB = process.env.mongodb
+const DB = process.env.mongodb
+
 mongoose.set("strictQuery", true);
 const conn = async () => {
-   mongoose.connect("mongodb://127.0.0.1:27017/project", () => {
+   mongoose.connect(DB, () => {
     console.log("database connected");
   });
 };
 conn().then(
-  app.listen(PORT, () => {
-    console.log("server started on port " + PORT);
+  app.listen(8000, () => {
+    console.log("server started on port " + 8000);
   }) 
 ).catch((err)=>console.log(err))
+
+// error page 
+
+// handling 404 page
+
+app.get('*',(req,res)=>{
+  res.render('404')
+})
+
+app.use('/',(err,req,res,next)=>{
+  res.render('error')
+})
+
+
+// handle other error
+

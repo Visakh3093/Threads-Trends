@@ -41,9 +41,9 @@
             </div>
             <div class="card-body p-4">
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0" style="color: #ff0000;">Receipt</p>
+                <span class="lead fw-normal mb-0" style="color: #ff0000;">Receipt </span><p class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter" style="margin-right: 30px; color: #000000;" >Address</p>
               </div>
-
+  &emsp; &emsp; &emsp;  &emsp; &emsp;
 
               <!-- let key of order.products.item; -->
               <% for(let i = 0;i<order.products.item.length;i++){ %>
@@ -115,7 +115,7 @@
                 <p class="text-muted mb-0" style="width: 440px;">Invoice Number : <%= order._id %></p>
                 <br>
                 <% if(order.discount){ %>
-                <p class="text-muted mb-0">, <span class="fw-bold me-4">Discount :</span>₹<%= order.discoount %></p>
+                <p class="text-muted mb-0"> <span class="fw-bold me-4">Discount :</span>₹<%= order.discoount %></p>
                 <% } else { %>
                   <p class="text-muted mb-0">, <span class="fw-bold me-4">Discount :</span>Nill</p>
                   <% } %>
@@ -136,15 +136,18 @@
                 <p class="text-muted mb-0"><span class="fw-bold me-4" style="margin-left: 260px;">Delivery Charge:  </span>₹00.00</p>
               </div>
             </div>
+            <%if(order.status !="Canceled"){%>
             <div class="card-footer border-0 px-4 py-5"
               style="background-color: #ffa45c;  ">
               <h5 class="">Total
                 paid: <span class="">₹<%=order.products.totalPrice %></span></h5>
             </div>
+            <%}else{} %>
           </div>
         </div>
       </div>
     </div>
+    
 	<% if(orders.status ==='Delivered'){ %>
 			 
 		<a href="/returnOrder?id=<%=orderId%>" class="btn btn-outline-danger mb-1" style="margin-left: 600px; margin-top: 50px; border-radius: 5px;">Return Order</a>
@@ -154,7 +157,28 @@
   <br><br><br>
 
         
+  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button> -->
 
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delivery Address</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body"><p>
+          <%=orders.fullname%><br><%=orders.houseNo%>,<%=orders.roadName%>,<br><%=orders.city%>,<%=orders.state%><br><br><%=orders.phone1%> &emsp; &emsp;
+        </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" style="justify-content: center;" data-dismiss="modal">OK</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
   
 
   <%- include('../partials/user-footer') %>

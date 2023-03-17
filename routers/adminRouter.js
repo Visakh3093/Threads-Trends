@@ -27,9 +27,12 @@ router.use(function (req, res, next) {
   );
   next();
 });
-
+ 
 router.use(express.json());
-router.use(express.urlencoded({ extended: true }));     
+router.use(express.urlencoded({ extended: true }));  
+
+router.set("view engine", "ejs");
+router.set("views", "./views/admin");
 
 // get method
 

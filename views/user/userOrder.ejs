@@ -77,7 +77,7 @@
              href="/calcelOrder?id=<%= key._id %> "></a>
                   <% }else{} %>
                   </td>
-                  <td><% if(key.status != 'Canceled') {%><a href="/orderDetails?id=<%= key._id %>" class="btn btn-info">View Details</a><% }else{}%></td>
+                  <td><a href="/orderDetails?id=<%= key._id %>" class="btn btn-info">View Details</a></td>
                  
                 </tr>
               </tbody>

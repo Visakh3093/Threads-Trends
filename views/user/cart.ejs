@@ -57,14 +57,14 @@
 						        <td class="price">₹<%= key.productId.price%></td>
 						        
 						        <td class="quantity">
-									<div class="input-group d-flex mb-3">
+									<div class="input-group d-flex mb-3 visakh">
 										<span class="input-group-btn mr-2" >
 										   <button type="button" class="quantity-left-minus btn decrement-btn" style="border-radius: 0px;" data-type="minus" data-product-id="<%= key.productId._id%>" data-field="">
 										  <i class="ion-ios-remove"></i>
 										   </button>
 										   </span>
 										   <input type="hidden"  value="<%= key.productId._id%>">
-										<input type="number" id="qty" name="quantity" class="form-control input-number qty" value="<%=key.qty%>" min="1" style=" caret-color: transparent;"  required style="height:max-content" readonly>
+										<input type="number" id="qty-<%= key.productId._id%>" name="quantity" class="form-control input-number qty" value="<%=key.qty%>" min="1" maxQty="<%= key.productId.quantity%>" style=" caret-color: transparent;"  required style="height:max-content" readonly>
 										<span class="input-group-btn ml-2">
 										   <button type="button" class="quantity-right-plus btn increment-btn" style="border-radius: 0px;" data-type="plus" data-product-id="<%= key.productId._id%>" data-field="">
 											<i class="ion-ios-add"></i>
@@ -74,7 +74,7 @@
 						        	
 					          </td>
 						        
-						        <td class="total" id="price1">₹ <%=key.qty*key.productId.price%></td>
+						        <td class="total visakh" id="price1">₹ <%=key.qty*key.productId.price%></td>
 						       </tr>
 							  <% }}else { %>
 								<p>login</p>
@@ -98,7 +98,7 @@
     					<h3>Cart Totals</h3>
     					<p class="d-flex"><div >
     						<span>Subtotal</span>
-    						<span id="subtotal">₹<%=cartProduct.totalPrice %> </span></div>
+    						<span class="subtotal">₹<%=cartProduct.totalPrice %> </span></div>
     					</p>
     					<p class="d-flex">
     						<span>Delivery</span>
@@ -110,7 +110,7 @@
     					</p>
     					<hr>
     					<p class="d-flex total-price">
-    						<span>Total</span><div id="price">
+    						<span>Total</span><div class="subtotal">
     						<span>₹<%=cartProduct.totalPrice %></span></div>
     					</p>
     				</div>
@@ -179,42 +179,7 @@
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script> 
 <!-- 
-  <script>
-		$(document).ready(function(){
-
-		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
-
-		          
-		            // Increment
-		        
-		    });
-
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
-		});
-	</script>
+ 
  -->
 
 
@@ -227,30 +192,38 @@
 
 $('.increment-btn').click(function(e) {
   e.preventDefault();
-  var inputEl = $('.qty');
+//   var inputEl = $('.qty');
+var inputEl = $(this).closest('.visakh').find('input.input-number')
   var productId = $(this).data('product-id');
   var qty = parseInt(inputEl.val());
   console.log(qty);
   console.log(productId);
-   //var maxQty = 
-  ////console.log(maxQty); 
-  //if (qty < maxQty) {
+   var maxQty = parseInt(inputEl.attr('maxQty'))
+  console.log(maxQty); 
+  if (qty < maxQty) {
    qty++;
+  }   
+  else
+  {
+	
+  } 
    inputEl.val(qty);
-    updateCartItem(productId, qty);
-  }
+    updateCartItem(productId, qty,inputEl);
+  
+  }  
 );
 
 // decrement button
 $('.decrement-btn').click(function(e) {
   e.preventDefault();
-  var inputEl = $('.qty');
+//   var inputEl = $('.qty');
+var inputEl = $(this).closest('.visakh').find('input.input-number')
   var productId = $(this).data('product-id');
   var qty = parseInt(inputEl.val());
   if (qty > '1') {
     qty--;
     inputEl.val(qty);
-    updateCartItem(productId, qty);
+    updateCartItem(productId, qty,inputEl);
   }else{
 
 	 inputEl.val('1');
@@ -261,7 +234,7 @@ $('.decrement-btn').click(function(e) {
 });
 
 // function to update cart item quantity using AJAX
-      function updateCartItem(productId, qty) {
+      function updateCartItem(productId, qty,inputEl) {
         $.ajax({
           url: '/updateCartItem',
           type: 'POST',
@@ -271,10 +244,12 @@ $('.decrement-btn').click(function(e) {
             console.log(data);
             const productPrice = data.productPrice;
             const newPrice = productPrice * qty;
-            $('#price').text(newPrice);
-			$('#price1').text(newPrice);
+			inputEl.closest('tr').find('.total').text(`₹ ${newPrice}`);
+            // $('#price').text(newPrice);
+			// $('#price1').text(newPrice);
 			$('#qty').text(data.qtyChange)
-            $('#subtotal').text(data.subtotal);
+            $('.subtotal').text(data.subtotal);
+			console.log(newPrice)
            // $('#totalart').text(data.grandTotal); 
           },
           error: function(jqXHR, textStatus, errorThrown) {

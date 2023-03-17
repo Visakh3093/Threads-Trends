@@ -2,10 +2,11 @@ const userModel = require("../models/userModel");
 const productModel = require("../models/productModel");
 const categorySchema = require("../models/categoryModel");
 const orderModel = require("../models/ordersModel");
-const bannerModel = require("../models/bannerModel")
+const bannerModel = require("../models/bannerModel");
+const categoryModel = require("../models/categoryModel");
 
 
-
+                
 
 
 
@@ -13,16 +14,89 @@ const adminLogin = (req, res) => {
   try{
     res.render("admin-login");
 
-  }
+  }           
   catch(err)
-  {
+  {    
     console.log(err)
   }
 };
 
-const getAdmin = (req, res) => {
 
-  res.render("admin-page");
+
+
+
+const getAdmin = async(req, res) => {
+  try {
+
+
+    if(req.session.admin_id){
+      // console.log(req.session.admin_id);
+    
+   const productData = await productModel.find()
+   const userdata = await userModel.find({is_admin:false})
+  const adminData = await userModel.findOne({is_admin:true})
+  const categorydata = await categoryModel.find()
+  //  const userData = await User.find()
+
+   const categoryArray = [];
+   const ordercount = [];
+   for(let key of categorydata){
+      categoryArray.push(key.name)
+      ordercount.push(0)
+   }
+   
+   const completeorder = []
+   const orderdata = await orderModel.find()
+   for(let key of orderdata){
+      const uppend = await key.populate('products.item.productId')
+      completeorder.push(uppend)
+   }
+
+   const productName = [];
+   const salesCount = [];
+   const productnames = await productModel.find();
+   for(let key of productnames){
+      productName.push(key.name);
+      salesCount.push(key.sales)
+   }
+
+   for(let i=0; i<completeorder.length; i++){
+      for(let j=0; j<completeorder[i].products.item.length; j++){
+          const catdata = completeorder[i].products.item[j].productId.category
+          const isexisting = categoryArray.findIndex(category=>{
+              return category === catdata
+          })
+          ordercount[isexisting]++
+      }
+   }
+
+   const showCount = await orderModel.find().count()
+   const productCount = await productModel.count()
+   const userCount = await userModel.count({is_admin:0})
+   const totalCategory = await categoryModel.count({isAvailable:1})
+
+  res.render('admin-page',{products:productData,
+      users:userdata,
+      admin:adminData,
+      category:categoryArray,
+      count:ordercount,
+      pname:productName,
+      pcount:salesCount,
+      showCount,
+      productCount,
+      userCount,
+      totalCategory
+  })
+  }else{
+      res.redirect('/admin/adminLogin')
+  }
+    
+  } catch (err) {
+    console.log(err)
+    
+  }
+
+  // res.render("admin-page");
 };
 
 const addProduct = async (req, res) => {
@@ -77,6 +151,7 @@ const blockUser = async (req, res) => {
 };
 
 const verifyAdmin = async (req, res, next) => {
+  try{
   const username = req.body.email;
   const password = req.body.password;
 
@@ -94,6 +169,11 @@ const verifyAdmin = async (req, res, next) => {
     res.render("admin-login",{message:'you are not a administrator'});
     // console.log("user not found");
   }
+}
+catch(err)
+{
+  console.log(err);
+}
 };
 
 const isLogin = (req, res, next) => {
@@ -108,11 +188,15 @@ const isLogout = (req, res) => {
   req.session.destroy();
   res.redirect("/admin");
 };
+
 const loadProduct = async (req, res, next) => {
   try {
+    console.log(req.body.quantity)
+    
     const images = req.files;
     const product = new productModel({
       name: req.body.sname,
+      quantity:req.body.quantity,
       category: req.body.scategory,
       price: req.body.sprice,
       description: req.body.sdescription,
@@ -120,6 +204,7 @@ const loadProduct = async (req, res, next) => {
       image: images.map((x) => x.filename),
     });
     await product.save().then(() => console.log("product saved"));
+  
 
     next()
   } catch (error) {
@@ -165,7 +250,7 @@ const getEdit = async (req, res) => {
     const id = req.query.id;
 
     const Sproduct = await productModel.findById({ _id: id });
-    console.log(Sproduct);
+  
     if (Sproduct) {
       res.render("edit-product", { product: Sproduct });
     } else {
@@ -181,6 +266,7 @@ const editProduct = async (req, res) => {
     const id = req.body.id
   const name = req.body.name
   const price = req.body.sprice
+  const quantity = req.body.quantity
   const description= req.body.sdescription
   const rating= req.body.srating
   const category= req.body.scategory
@@ -194,6 +280,7 @@ const editProduct = async (req, res) => {
       $set:{
         name:name,
         price:price,
+        quantity:quantity,
         description:description,
         rating:rating,    
         category:category,
@@ -207,6 +294,7 @@ const editProduct = async (req, res) => {
       $set:{
         name:name,
         price:price,
+        quantity:quantity,
         description:description,
         rating:rating,
         category:category,
@@ -257,7 +345,7 @@ const listCategory = async (req,res)=>{
   }
 }
 
-const addCategory = async (req,res)=>{
+const addCategory = async (req,res,next)=>{
   try{
     // const categoryName = req.body.category
     const categoryData = await categorySchema.findOne({name:req.body.category})
@@ -275,7 +363,7 @@ const addCategory = async (req,res)=>{
 
   }  
   catch(err){
-    console.log(err)
+    next(err)
   }
 }
 
@@ -299,7 +387,7 @@ const loadOrderList = async (req,res)=>{
   else
   {
     res.render('admin-orderlist',{order:orderData,id:'ALL',product:productData,users:userData})
-
+                          
   }
         
 
@@ -475,7 +563,7 @@ const addBanner = async(req,res)=>{
   res.redirect('/admin/loadBanner')
 
   }
-  catch(err)
+  catch(err) 
   {
     console.log(err)
   }

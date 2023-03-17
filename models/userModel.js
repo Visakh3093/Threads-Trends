@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
         required:true 
     },
     isAdmin:Boolean,
+    
     isVerified:Boolean,
     cart:{
         item:[
@@ -84,7 +85,7 @@ userSchema.methods.addToCart = function (product) {
       cart.item.push({ productId: product._id, qty: 1, price: product.price })
     }
     cart.totalPrice += product.price
-    console.log('User in schema:', this)
+    // console.log('User in schema:', this)
     return this.save()
   }
   
@@ -100,7 +101,7 @@ userSchema.methods.addToCart = function (product) {
       const prod = await productModel.findById(productId)
       cart.totalPrice -= prod.price * cart.item[isExisting].qty
       cart.item.splice(isExisting, 1)
-      console.log('User in schema:', this)
+      // console.log('User in schema:', this)
       return this.save()
     }
   }

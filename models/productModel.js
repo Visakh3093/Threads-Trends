@@ -7,6 +7,10 @@ const productSchema = new mongoose.Schema({
         required:true
         
     },
+    quantity:{
+        type:Number,
+        required:true
+    },
     category:{   
         type:String,
         required:true
@@ -31,7 +35,14 @@ const productSchema = new mongoose.Schema({
         type:Boolean,
         default:true
     },
-    
+    sales:{
+        type:Number,
+        default:0
+    },
+    quantity:{
+        type:Number,
+        required:true
+    }           
 
 
 

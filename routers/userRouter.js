@@ -27,7 +27,10 @@ router.use(function(req, res, next) {
 router.use(express.json()); 
 router.use(express.urlencoded({extended:true}))
 
-
+router.set("view engine", "ejs");
+router.set("views", "./views/user");
+            
+            
 router.get('/',userController.isLogin,userController.getUserHome)               
 
 router.get('/login',userController.getLogin)
@@ -66,9 +69,9 @@ router.get('/deleteWishlist',userController.isUser,userController.deleteWishlist
 
 router.get('/addCartDeleteWishlist',userController.isUser,userController.addCartDeleteWishlist)
 
-router.get('/calcelOrder',userController.isUser,userController.cancelOrder) 
+router.get('/calcelOrder',userController.isUser,userController.cancelOrder)         
 
-router.get('/orderDetails',userController.isUser,userController.orderDetails)
+router.get('/orderDetails',userController.isUser,userController.orderDetails)         
 
 router.get('/orderSucces',userController.isUser,userController.orderSucces)
 
