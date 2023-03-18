@@ -85,6 +85,8 @@ router.get('/editAdressProfile',userController.isUser,userController.loadProfile
 
 router.get('/returnOrder',userController.isUser,userController.returnReqst)
 
+router.get('/addtocart',userController.isUser,userController.addToCart)
+
 router.get('/usrDltAddress',userController.isUser,userController.usrDltAddress)
 
 router.get('/usrEditAddress',userController.isUser,userController.loadusrEditAddress)
@@ -92,8 +94,6 @@ router.get('/usrEditAddress',userController.isUser,userController.loadusrEditAdd
 // post method  
 
 router.post('/register',userController.addUser,userController.loadOtp)
-
-router.post('/addtocart',userController.isUser,userController.addToCart)
 
 router.post('/login',userController.verifyuser)
 

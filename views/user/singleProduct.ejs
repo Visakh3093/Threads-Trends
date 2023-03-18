@@ -76,8 +76,8 @@
                     <p style="color: #000;"></p>
                 </div>
             </div>
-            <input type="hidden" value="<%=single._id %>" id="input">
-            <p class="btn btn-black py-3 px-5 "  onclick="addTocart()" data-toggle="modal" data-target="#exampleModal">Add to Cart</p>
+            <!-- <input type="hidden" value="<%=single._id %>" id="input"> -->
+            <a href="/addtocart?id=<%= single._id %>">  <p class="btn btn-black py-3 px-5 ">Add to Cart</p></a>
               </div>
           </div>
       </div>
@@ -160,19 +160,6 @@
       </div>
     </div>
   </div>  
-  <script>
-    const input = document.querySelector('#input')
-
-    async function addTocart()
-    {
-        await fetch("http://localhost:8000/addtocart",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-        id:input.value
-    })}).catch((err)=>console.log(err))
-
-    }
-  </script>
+  
 
 <%- include('../partials/user-footer') %>

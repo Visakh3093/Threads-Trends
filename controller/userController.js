@@ -262,7 +262,6 @@ const addUser = async (req,res,next)=>{
    
 
   try{
-
     const userEmail = await userModel.findOne({email:req.body.email})
     const userMobile = await userModel.findOne({mobile:req.body.mobile})
 
@@ -272,6 +271,7 @@ const addUser = async (req,res,next)=>{
     }
     else 
     {
+      
        newUsers = {
         name:req.body.name,
         email:req.body.email,
@@ -280,6 +280,7 @@ const addUser = async (req,res,next)=>{
       }
 
       next()
+      
 
     }
 
@@ -523,7 +524,7 @@ const loadCart = async (req,res,next)=>{
 const addToCart = async (req,res,next)=>{
 
     try{
-        const productId = req.body.id;
+        const productId = req.query.id;
         userSession = req.session
         const userData = await userModel.findById({_id: userSession.user_id})
         const productData = await productModel.findById({_id:productId})

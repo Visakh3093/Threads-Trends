@@ -8,7 +8,7 @@ const multer = require("../util/multer");
 const router = express();
 
 router.use(
-  session({     
+  session({       
     secret: "ghjk",
     resave: false,
     saveUninitialized: true,
