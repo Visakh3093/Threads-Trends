@@ -48,9 +48,9 @@ conn().then(
 
 // handling 404 page
 
-app.get('*',(req,res)=>{
-  res.render('404')
-})
+// app.get('*',(req,res)=>{
+//   res.render('404')
+// })
 
 app.use('/',(err,req,res,next)=>{
   res.render('error')
